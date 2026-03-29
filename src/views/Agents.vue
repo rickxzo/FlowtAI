@@ -1,5 +1,4 @@
 <script setup>
-import Navbar from '../components/Navbar.vue'
 import { ref, computed, onMounted } from 'vue'
 
 // STATE
@@ -216,7 +215,7 @@ onMounted(() => {
 </script>
 
 <template>
-<Navbar />
+
 
 <div class="min-h-screen bg-zinc-950 text-white mt-16">
   <div class="max-w-7xl mx-auto px-8 py-10">
