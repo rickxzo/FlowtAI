@@ -1,10 +1,8 @@
 <script setup>
-import Navbar from '../components/Navbar.vue'
 </script>
 
 
 <template>
-  <Navbar />
   <div class="min-h-screen bg-zinc-950 text-white text-left mt-12" style="font-family:'Space Grotesk';">
     <div class="max-w-5xl mx-auto px-8 py-12 space-y-12">
 
