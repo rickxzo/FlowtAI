@@ -1,0 +1,62 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const isLoggedIn = ref(false)
+
+const checkUser = async () => {
+  try {
+    const res = await fetch('http://localhost:5000/logged-in', { credentials: 'include' })
+    const data = await res.json()
+    isLoggedIn.value = data.logged_in
+    console.log(data)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+const handleAuth = async () => {
+  if (isLoggedIn.value) {
+    await fetch('http://localhost:5000/logout', { method: 'POST', credentials: 'include' })
+    isLoggedIn.value = false
+    window.location.href = '/'
+  } else {
+    window.location.href = '/login'
+  }
+}
+
+onMounted(() => {
+  checkUser()
+})
+</script>
+
+<template>
+  <div class="fixed top-4 left-0 w-full flex justify-center z-50" style="font-family: 'Space Grotesk';">
+    <div
+      class="flex items-center justify-between gap-8 px-6 py-3
+             bg-black/20 backdrop-blur-md text-white
+             rounded-full shadow-lg border border-white/10
+             w-[50%] max-w-5xl"
+    >
+      <!-- Left: Logo -->
+      <div class="font-semibold text-lg tracking-wide" style="font-family: 'Shadows Into Light Two';">
+        <a href="/" class="hover:text-white transition">flowt.ai</a>
+      </div>
+
+      <!-- Middle: Links -->
+      <div class="hidden md:flex gap-6 text-sm text-gray-300">
+        <a href="/agents" class="hover:text-white transition">Agents</a>
+        <a href="/models" class="hover:text-white transition">Models</a>
+        <a href="/billing" class="hover:text-white transition">Billing</a>
+        <a href="/docs" class="hover:text-white transition">Docs</a>
+      </div>
+
+      <!-- Right: Auth -->
+      <button
+        @click="handleAuth"
+        class="px-4 py-1.5 rounded-full bg-white text-black text-sm font-medium hover:scale-105 transition"
+      >
+        {{ isLoggedIn ? 'Logout' : 'Login' }}
+      </button>
+    </div>
+  </div>
+</template>
