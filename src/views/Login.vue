@@ -1,5 +1,4 @@
 <script setup>
-import Navbar from '../components/Navbar.vue'
 
 import { ref } from 'vue'
 
@@ -40,7 +39,6 @@ const login = async () => {
 </script>
 
 <template>
-    <Navbar />
     <div class="min-h-[92vh] w-full flex flex-col lg:flex-row text-white mt-12">
 
   <!-- LEFT SECTION -->
