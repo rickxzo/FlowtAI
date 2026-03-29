@@ -1,5 +1,4 @@
 <script setup>
-import Navbar from '../components/Navbar.vue'
 import { ref, computed, onMounted } from 'vue'
 
 const models = ref([])
@@ -44,7 +43,6 @@ onMounted(loadModels)
   <div class="h-screen flex flex-col bg-zinc-950 text-white pt-20" style="font-family: 'Space Grotesk';">
 
     <!-- NAVBAR -->
-    <Navbar />
 
     <!-- CONTENT WRAPPER -->
     <div class="flex-1 flex flex-col overflow-hidden">
