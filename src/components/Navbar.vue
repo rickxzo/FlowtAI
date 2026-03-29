@@ -44,10 +44,10 @@ onMounted(() => {
 
       <!-- Middle: Links -->
       <div class="hidden md:flex gap-6 text-sm text-gray-300">
-        <a href="/agents" class="hover:text-white transition">Agents</a>
-        <a href="/models" class="hover:text-white transition">Models</a>
-        <a href="/billing" class="hover:text-white transition">Billing</a>
-        <a href="/docs" class="hover:text-white transition">Docs</a>
+        <a router-link to="/agents" class="hover:text-white transition">Agents</a>
+        <a router-link to="/models" class="hover:text-white transition">Models</a>
+        <a router-link to="/billing" class="hover:text-white transition">Billing</a>
+        <a router-link to="/docs" class="hover:text-white transition">Docs</a>
       </div>
 
       <!-- Right: Auth -->
