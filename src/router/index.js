@@ -5,10 +5,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Homme.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
-import Models from '../views/Models.vue')
-import Agents from '../views/Agents.vue')
-import Docs from '../views/Docs.vue')
-import Billing from '../views/Billing.vue')
+import Models from '../views/Models.vue'
+import Agents from '../views/Agents.vue'
+import Docs from '../views/Docs.vue'
+import Billing from '../views/Billing.vue'
 
 const routes = [
   { path: '/', component: Home },
