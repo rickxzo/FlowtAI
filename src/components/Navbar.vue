@@ -39,15 +39,15 @@ onMounted(() => {
     >
       <!-- Left: Logo -->
       <div class="font-semibold text-lg tracking-wide" style="font-family: 'Shadows Into Light Two';">
-        <a href="/" class="hover:text-white transition">flowt.ai</a>
+        <router-link to="/" class="hover:text-white transition">flowt.ai</a>
       </div>
 
       <!-- Middle: Links -->
       <div class="hidden md:flex gap-6 text-sm text-gray-300">
-        <a router-link to="/agents" class="hover:text-white transition">Agents</a>
-        <a router-link to="/models" class="hover:text-white transition">Models</a>
-        <a router-link to="/billing" class="hover:text-white transition">Billing</a>
-        <a router-link to="/docs" class="hover:text-white transition">Docs</a>
+        <router-link to="/agents" class="hover:text-white transition">Agents</a>
+        <router-link to="/models" class="hover:text-white transition">Models</a>
+        <router-link to="/billing" class="hover:text-white transition">Billing</a>
+        <router-link to="/docs" class="hover:text-white transition">Docs</a>
       </div>
 
       <!-- Right: Auth -->
