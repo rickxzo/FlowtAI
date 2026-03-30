@@ -312,7 +312,7 @@ from flask import Flask, Response, jsonify, request, session, render_template, r
 app = Flask(__name__, template_folder='.', static_folder='front')
 CORS(app,
      supports_credentials=True,
-     origins=["http://localhost:5173"])
+     origins=["https://flowtai.onrender.com"])
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_SECURE'] = False
 app.secret_key = os.getenv('SECRET_KEY')
