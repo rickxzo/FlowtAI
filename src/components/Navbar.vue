@@ -1,11 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const isLoggedIn = ref(false)
 
 const checkUser = async () => {
   try {
-    const res = await fetch('http://localhost:5000/logged-in', { credentials: 'include' })
+    const res = await fetch('https://flowt-ai-j152.onrender.com/logged-in', { credentials: 'include' })
     const data = await res.json()
     isLoggedIn.value = data.logged_in
     console.log(data)
@@ -16,11 +18,11 @@ const checkUser = async () => {
 
 const handleAuth = async () => {
   if (isLoggedIn.value) {
-    await fetch('http://localhost:5000/logout', { method: 'POST', credentials: 'include' })
+    await fetch('https://flowt-ai-j152.onrender.com/logout', { method: 'POST', credentials: 'include' })
     isLoggedIn.value = false
-    window.location.href = '/'
+    router.push('/')
   } else {
-    window.location.href = '/login'
+    router.push('/login')
   }
 }
 
