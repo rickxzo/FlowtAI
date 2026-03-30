@@ -313,8 +313,8 @@ app = Flask(__name__, template_folder='.', static_folder='front')
 CORS(app,
      supports_credentials=True,
      origins=["https://flowtai.onrender.com"])
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
 app.secret_key = os.getenv('SECRET_KEY')
 
 import redis
@@ -328,6 +328,12 @@ r = redis.Redis(
 )
 
 print("IMPORTS DONE")
+
+@app.after_request
+def add_headers(response):
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Origin'] = 'https://flowtai.onrender.com'
+    return response
 
 @app.route('/respond', methods=['POST', 'GET'])     
 def respond():
