@@ -49,7 +49,7 @@ const openDelete = (id) => {
 const confirmDelete = async () => {
   isSubmitting.value = true
 
-  await fetch("http://localhost:5000/delete-agent?id=" + deleteAgentId.value)
+  await fetch("https://flowt-ai-j152.onrender.com/delete-agent?id=" + deleteAgentId.value)
 
   showDelete.value = false
   await loadAgents()
@@ -79,7 +79,7 @@ const uploadKB = async () => {
     const formData = new FormData()
     formData.append("file", uploadFile.value)
 
-    const res = await fetch("http://localhost:5000/agent-kb?agent_id=" + uploadAgentId.value, {
+    const res = await fetch("https://flowt-ai-j152.onrender.com/agent-kb?agent_id=" + uploadAgentId.value, {
       method: "POST",
       body: formData
     })
@@ -125,7 +125,7 @@ const createAgent = async () => {
 
   try {
     const res = await fetch(
-      "http://localhost:5000/create-agent?name=" + encodeURIComponent(newName.value) +
+      "https://flowt-ai-j152.onrender.com/create-agent?name=" + encodeURIComponent(newName.value) +
       "&model=" + encodeURIComponent(newModel.value) +
       "&prompt=" + encodeURIComponent(prompt.value),
       {
@@ -152,7 +152,7 @@ const saveEdit = async () => {
 
   try {
     const res = await fetch(
-      "http://localhost:5000/edit-agent?id=" + editingAgent.value.id +
+      "https://flowt-ai-j152.onrender.com/edit-agent?id=" + editingAgent.value.id +
       "&model=" + encodeURIComponent(editModel.value) +
       "&prompt=" + encodeURIComponent(editPrompt.value)
     )
@@ -178,7 +178,7 @@ const loadAgents = async () => {
   isUnauthorized.value = false
 
   try {
-    const res = await fetch("http://localhost:5000/agents", {
+    const res = await fetch("https://flowt-ai-j152.onrender.com/agents", {
       credentials: "include"
     })
 
@@ -200,7 +200,7 @@ const loadAgents = async () => {
 }
 
 const loadModels = async () => {
-  const res = await fetch("http://localhost:5000/show-models", {
+  const res = await fetch("https://flowt-ai-j152.onrender.com/show-models", {
     credentials: "include"
   })
   const data = await res.json()
