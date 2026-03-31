@@ -1,4 +1,7 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 import { ref } from 'vue'
 
 const username = ref('')
@@ -99,7 +102,7 @@ const login = async () => {
 
     // success
     error.value = ""
-    window.location.href = "/agents"
+    router.push("/agents")
 
   } catch (err) {
     error.value = "Server error. Try again."
