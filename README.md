@@ -17,7 +17,7 @@ The service only provides backend functionality. API to fetch responses is speci
 
 ## Recent updates -
 
-### Update 004
+#### Update 004
 - UI redesign for an enhanced experience
 
 #### Update 003
