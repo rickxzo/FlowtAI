@@ -1,4 +1,5 @@
 <script setup>
+import Navbar from '../components/Navbar.vue'
 
 import { ref } from 'vue'
 
@@ -31,6 +32,7 @@ const cardClass = (amount) => {
 </script>
 
 <template>
+  <Navbar />
   
   <div class="min-h-[90vh] bg-zinc-950 text-white px-6 py-10 mt-16">
 
