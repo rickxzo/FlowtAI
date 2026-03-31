@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+  import Navbar from '../components/Navbar.vue'
 
 const models = ref([])
 const search = ref('')
@@ -40,6 +41,7 @@ onMounted(loadModels)
 </script>
 
 <template>
+  <Navbar />
   <div class="h-screen flex flex-col bg-zinc-950 text-white pt-20" style="font-family: 'Space Grotesk';">
 
     <!-- NAVBAR -->
