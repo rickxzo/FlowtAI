@@ -643,7 +643,7 @@ def login():
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
     session.clear()
-    return redirect(url_for('login_page'))
+    return jsonify({"message": "Logged out successfully"}), 200
 
 @app.route('/logged-in', methods=['POST', 'GET'])
 def logged_in():
