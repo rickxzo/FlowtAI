@@ -25,7 +25,7 @@ const sendOtp = async () => {
 
   try {
     // TODO: replace endpoint later
-    const res = await fetch(`https://flowt-ai-j152.onrender.com/send-otp?email=${encodeURIComponent(email.value)}`, {
+    const res = await fetch(`https://flowtai-1.onrender.com/send-otp?email=${encodeURIComponent(email.value)}`, {
       credentials: 'include'
     })
 
@@ -52,7 +52,7 @@ const verifyOtp = async () => {
   try {
     // TODO: replace endpoint later
     const res = await fetch(
-      `https://flowt-ai-j152.onrender.com/confirm-otp?email=${encodeURIComponent(email.value)}&otp=${otp.value}`, {
+      `https://flowtai-1.onrender.com/confirm-otp?email=${encodeURIComponent(email.value)}&otp=${otp.value}`, {
         credentials: 'include'
       }
     )
@@ -82,7 +82,7 @@ const login = async () => {
   try {
     processing.value = true
     const res = await fetch(
-      `https://flowt-ai-j152.onrender.com/signup?username=${username.value}&email=${email.value}&password=${password.value}`,
+      `https://flowtai-1.onrender.com/signup?username=${username.value}&email=${email.value}&password=${password.value}`,
       {
         method: "GET", // (you should switch to POST later)
         credentials: "include"
