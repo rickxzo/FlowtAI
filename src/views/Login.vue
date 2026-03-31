@@ -1,5 +1,9 @@
 <script setup>
 
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 import { ref } from 'vue'
 
 const username = ref('')
@@ -23,7 +27,7 @@ const login = async () => {
     })
 
     if(res.ok){
-      window.location = "/agents"
+      router.push("/agents")
     }else{
       const txt = await res.text()
       error.value = txt || "Login failed"
