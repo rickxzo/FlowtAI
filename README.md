@@ -1,5 +1,51 @@
-# Vue 3 + Vite
+# Flowt.AI - Context chatbots made easy.
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+https://flowt-ai-ax2d.onrender.com
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## What it does?
+
+Flowt.AI allows the user to create AI agents based on a preset architecture template which allows the agent to access data uploaded by user and respond to queries appropriately.<br>
+The entire setup for an agent is only 3 steps
+- Specify instruction.
+- Choose LLM model.
+- Upload context data.
+
+While no mode of topping up is currently implemented, new accounts are **provided with a balance of $0.15**, so feel free to test out.
+
+### Note
+The service only provides backend functionality. API to fetch responses is specified in /docs.
+
+## Recent updates -
+
+### Update 004
+- UI redesign for an enhanced experience
+
+#### Update 003
+- Email verification is now necessary to ensure security. 
+
+#### Update 002
+- Conversation short-term context handling is now provided by our service. Read docs for how to use.
+- Faster responses.
+- Responses are now streamed.
+  
+#### Update 001
+- Cost of initializing an agent is now zero.
+- The number of agents per account is now capped at a hundred.
+- An initial cost of account creation is to be charged (amount TBD).
+
+## Upcoming updates -
+- Improved UI.
+- Added flexibility to agent options.
+- Optimized knowledge base data storage.
+- Improved rate limit.
+
+## Stack -
+- Flask (Backend framework)
+- Vue (Frontend framework)
+- TailwindCSS (Styling)
+- PostgreSQL - NeonDB (Database)
+- Render (Hosting)
+- LangGraph (AI agent architecture)
+- https://resend.com (Email sharing)
+- https://replicate.com (LLM Inference)
+- https://app.pinecone.io (VectorDB)
