@@ -909,7 +909,7 @@ def show_models():
                             for m in models]
                 }, 200
     except Exception as e:
-        #print(f"Error fetching models: {e}")
+        logger.error(f"Error fetching models: {e}")
         return f"Error fetching models: {e}", 500
 
 @app.route('/add-model', methods=['POST', 'GET'])
