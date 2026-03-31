@@ -1,6 +1,6 @@
-# Flowt.AI - Context chatbots made easy.
+# FlowtAI - Context chatbots made easy.
 
-https://flowt-ai-ax2d.onrender.com
+https://flowtai.onrender.com
 
 ## What it does?
 
