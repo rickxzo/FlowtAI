@@ -879,6 +879,17 @@ def models():
 @app.route('/show-models', methods=['POST', 'GET'])
 def show_models():
     try:
+        models = r.get('models')
+        if models is not None:
+            return {"models": [{"id": m[0], 
+                            "name": m[1], 
+                            "description": m[2], 
+                            "input": m[3], 
+                            "output": m[4], 
+                            "logo": m[5], 
+                            "link": m[6]} 
+                            for m in models]
+                }, 200
         conn = connect_db()
         if conn == 404:
             return "Database connection error", 500
@@ -887,6 +898,7 @@ def show_models():
         models = cursor.fetchall()
         cursor.close()
         conn.close()
+        r.set('models', models, ex=300)
         return {"models": [{"id": m[0], 
                             "name": m[1], 
                             "description": m[2], 
@@ -920,6 +932,7 @@ def add_model():
         conn.commit()
         cursor.close()
         conn.close()
+        r.delete('models')
         return "Model added successfully", 200
     except Exception as e:
         #print(f"Error adding model: {e}")
