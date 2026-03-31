@@ -1,5 +1,5 @@
 <script setup>
-import Navbar from './components/Navbar.vue'
+import Navbar from '../components/Navbar.vue'
 import { ref, computed, onMounted } from 'vue'
 
 // STATE
