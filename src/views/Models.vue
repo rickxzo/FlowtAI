@@ -8,7 +8,7 @@ const selected = ref(null)
 
 const loadModels = async () => {
   try {
-    const res = await fetch('https://flowt-ai-j152.onrender.com/show-models')
+    const res = await fetch('https://flowtai-1.onrender.com/show-models')
     const data = await res.json()
     models.value = data.models
   } catch (err) {
