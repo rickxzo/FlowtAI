@@ -879,17 +879,6 @@ def models():
 @app.route('/show-models', methods=['POST', 'GET'])
 def show_models():
     try:
-        models = r.get('models')
-        if models is not None:
-            return {"models": [{"id": m[0], 
-                            "name": m[1], 
-                            "description": m[2], 
-                            "input": m[3], 
-                            "output": m[4], 
-                            "logo": m[5], 
-                            "link": m[6]} 
-                            for m in models]
-                }, 200
         conn = connect_db()
         if conn == 404:
             return "Database connection error", 500
