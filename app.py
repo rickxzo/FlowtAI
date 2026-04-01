@@ -324,7 +324,7 @@ r = redis.Redis(
     port=18483,
     decode_responses=True,
     username="default",
-    password="YTxB9dPeejW2aY8422Uk5wqXoWBz82mK",
+    password=os.getenv("REDIS_PASS"),
 )
 
 print("IMPORTS DONE")
