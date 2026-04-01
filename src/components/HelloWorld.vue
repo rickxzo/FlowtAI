@@ -6,7 +6,7 @@ import Aurora from './ColorBends.vue'
   <div class="relative text-white">
 
     <!-- Fixed Aurora -->
-    <div class="fixed inset-0 -z-10">
+    <div class="fixed inset-0 z-10">
       <Aurora
         :color-stops="['#191919', '#9678DC', '#191919']"
         :amplitude="1.0"
