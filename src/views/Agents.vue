@@ -101,7 +101,7 @@ const uploadKB = async () => {
 
 const copyId = async (id) => {
   try {
-    await navigator.clipboard.writeText(id)
+    await navigator.clipboard.writeText("https://flowtai-1.onrender.com/respond?agent-id="+id+"&input=")
     alert("Agent ID copied!")
   } catch (e) {
     console.log("Copy failed", e)
