@@ -35,10 +35,9 @@ The service only provides backend functionality. API to fetch responses is speci
 - An initial cost of account creation is to be charged (amount TBD).
 
 ## Upcoming updates -
-- Improved UI.
-- Added flexibility to agent options.
-- Optimized knowledge base data storage.
-- Improved rate limit.
+- Improved rate limits
+- Faster responses
+- Responsive UI
 
 ## Stack -
 - Flask (Backend framework)
