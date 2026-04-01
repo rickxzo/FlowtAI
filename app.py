@@ -9,9 +9,7 @@ import json
 import re
 
 from werkzeug.security import generate_password_hash, check_password_hash
-
 import logging
-
 logger = logging.getLogger(__name__)
 
 import psycopg2
@@ -40,9 +38,7 @@ def send_mail(mail, message, subject):
         	"subject": f"Flowt.AI - {subject}",
         	"html": message,
         }
-        
         resend.Emails.send(params)
-       
         return 1
     except Exception as e:
         logger.error("Error sending mail: ", e)
@@ -65,7 +61,6 @@ def post_process(user_id, agent_id, convo_id, reply, ipt, opt, user_input, input
 
     conn = connect_db()
     cursor = conn.cursor()
-
     cursor.execute(
         '''
         UPDATE agents
@@ -75,7 +70,6 @@ def post_process(user_id, agent_id, convo_id, reply, ipt, opt, user_input, input
         WHERE id = %s
         ''', (cost, ipt, opt, agent_id)
     )
-
     cursor.execute(
         '''
         UPDATE users
@@ -83,28 +77,22 @@ def post_process(user_id, agent_id, convo_id, reply, ipt, opt, user_input, input
         WHERE id = %s
         ''', (cost, user_id)
     )
-
     cursor.execute("INSERT INTO messages (convo_id, message) VALUES (%s, %s)", (convo_id, f"User: {user_input}"))
-
     cursor.execute(
         '''
         INSERT INTO messages (convo_id, message)
         VALUES (%s, %s)
         ''', (convo_id, f"You: {reply}")
     )
-
-
     conn.commit()
     cursor.close()
     conn.close()
 
 
-
 from pinecone import Pinecone
-pc = Pinecone(api_key=os.getenv('PINECONE_API_KEY'))  # Replace with your actual API key
+pc = Pinecone(api_key=os.getenv('PINECONE_API_KEY'))  
 
 import replicate
-#REPLICATE_API_TOKEN = os.getenv("REPLICATE_API_TOKEN")
 client = replicate.Client(api_token=os.getenv("REPLICATE_API_TOKEN"))
 
 from typing import TypedDict, List, Dict, Any, Optional
