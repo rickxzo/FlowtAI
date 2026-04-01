@@ -901,7 +901,7 @@ def show_models():
         models = cursor.fetchall()
         cursor.close()
         conn.close()
-        r.set('models', json.dumps(models), ex=300)
+        r.set('models', json.dumps(models), ex=900)
         return {"models": [{"id": m[0], 
                             "name": m[1], 
                             "description": m[2], 
