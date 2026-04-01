@@ -19,6 +19,7 @@ The service only provides backend functionality. API to fetch responses is speci
 
 #### Update 004
 - UI redesign for an enhanced experience
+- Caching introduced for efficient usage
 
 #### Update 003
 - Email verification is now necessary to ensure security. 
@@ -46,6 +47,7 @@ The service only provides backend functionality. API to fetch responses is speci
 - PostgreSQL - NeonDB (Database)
 - Render (Hosting)
 - LangGraph (AI agent architecture)
+- Redis (Caching)
 - https://resend.com (Email sharing)
 - https://replicate.com (LLM Inference)
 - https://app.pinecone.io (VectorDB)
