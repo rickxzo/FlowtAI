@@ -518,16 +518,6 @@ Return ONLY the JSON object.
         #print(f"Error during response generation: {e}")
         return f"Error during response generation: {e}", 500
 
-@app.route('/', methods=['POST', 'GET'])     
-def home():
-    if 'userid' not in session:
-        return redirect(url_for('login_page'))
-    return render_template('home.html')
-
-@app.route('/signup-page', methods=['POST', 'GET'])     
-def signup_page():
-    return render_template('signup.html')
-
 @app.route('/signup', methods=['POST', 'GET'])        # CONVERT LINK -> FORM UPDATE
 def signup():
     try:
@@ -610,9 +600,6 @@ def confirm_otp():
         #print(f"Error during OTP confirmation: {e}")
         return f"Error during OTP confirmation: {e}", 500
     
-@app.route('/login-page', methods=['POST', 'GET'])
-def login_page():
-    return render_template('login.html')
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -652,9 +639,6 @@ def logged_in():
     else:
         return jsonify({"logged_in": False})
 
-@app.route('/docs', methods=['POST', 'GET'])
-def docs():
-    return render_template('docs.html')
 
 @app.route('/agents', methods=['POST', 'GET'])
 def agents():
@@ -849,9 +833,6 @@ def add_credit():
     except Exception as e:
         return f"Error adding credit: {e}", 500
 
-@app.route('/bills', methods=['GET', 'POST'])
-def bills():
-    return render_template('bills.html')
 # ADMIN SECTION
 
 @app.route('/admin-login', methods=['POST', 'GET'])
@@ -871,10 +852,6 @@ def admin_login():
 def admin_logout():
     session.pop('admin', None)
     return "Admin logged out successfully", 200
-
-@app.route('/models', methods=['POST', 'GET'])
-def models():
-    return render_template('models.html')
 
 @app.route('/show-models', methods=['POST', 'GET'])
 def show_models():
