@@ -879,8 +879,11 @@ def models():
 @app.route('/show-models', methods=['POST', 'GET'])
 def show_models():
     try:
-        models = json.loads(r.get("models"))
+        models = r.get("models")
+        logger.error(models)
         if models is not None:
+            models = json.loads(models)
+            logger.error(models)
             return {"models": [{"id": m[0], 
                             "name": m[1], 
                             "description": m[2], 
