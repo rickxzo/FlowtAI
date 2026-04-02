@@ -916,6 +916,26 @@ def delete_model():
         if conn == 404:
             return "Database connection error", 500
         cursor = conn.cursor()
+        cursor.execute("""
+        SELECT model 
+        FROM agents 
+        WHERE model != %s
+        GROUP BY model 
+        ORDER BY COUNT(*) DESC 
+        LIMIT 1
+        """, (model_id,))
+        
+        result = cursor.fetchone()
+        cursor.execute("SELECT SELECT DISTINCT(U.email) FROM users U JOIN agents A ON U.id = A.userid WHERE A.model = %s", (model_id,))
+        emails = cursor.fetchall()
+        for i in emails:
+            send_email(i, "Due to removal of a LLM model used by one or more of your AI agents, those agents are now supported by the most used LLM on our platform.", "LLM change for your agents.")
+        cursor.execute(
+            '''
+            UPDATE agents SET model = %s
+            WHERE model = %s
+            ''', (result[0], model_id)
+        )
         cursor.execute("DELETE FROM models WHERE id = %s", (model_id,))
         conn.commit()
         cursor.close()
