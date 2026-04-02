@@ -926,7 +926,7 @@ def delete_model():
         """, (model_id,))
         
         result = cursor.fetchone()
-        cursor.execute("SELECT SELECT DISTINCT(U.email) FROM users U JOIN agents A ON U.id = A.userid WHERE A.model = %s", (model_id,))
+        cursor.execute("SELECT DISTINCT(U.email) FROM users U JOIN agents A ON U.id = A.userid WHERE A.model = %s", (model_id,))
         emails = cursor.fetchall()
         for i in emails:
             send_email(i, "Due to removal of a LLM model used by one or more of your AI agents, those agents are now supported by the most used LLM on our platform.", "LLM change for your agents.")
