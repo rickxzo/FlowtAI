@@ -929,7 +929,7 @@ def delete_model():
         cursor.execute("SELECT DISTINCT(U.email) FROM users U JOIN agents A ON U.id = A.userid WHERE A.model = %s", (model_id,))
         emails = cursor.fetchall()
         for i in emails:
-            send_mail(i, "Due to removal of a LLM model used by one or more of your AI agents, those agents are now supported by the most used LLM on our platform.", "LLM change for your agents.")
+            send_mail(i[0], "Due to removal of a LLM model used by one or more of your AI agents, those agents are now supported by the most used LLM on our platform.", "LLM change for your agents.")
         cursor.execute(
             '''
             UPDATE agents SET model = %s
@@ -940,6 +940,7 @@ def delete_model():
         conn.commit()
         cursor.close()
         conn.close()
+        r.delete("models")
         return "Model deleted successfully", 200
     except Exception as e:
         #print(f"Error deleting model: {e}")
