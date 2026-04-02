@@ -15,7 +15,24 @@ While no mode of topping up is currently implemented, new accounts are **provide
 ### Note
 The service only provides backend functionality. API to fetch responses is specified in /docs.
 
+## Stack -
+- Flask (Backend framework)
+- Vue (Frontend framework)
+- TailwindCSS (Styling)
+- PostgreSQL - NeonDB (Database)
+- Render (Hosting)
+- LangGraph (AI agent architecture)
+- Redis (Caching)
+- https://resend.com (Email sharing)
+- https://replicate.com (LLM Inference)
+- https://app.pinecone.io (VectorDB)
+
+  
 ## Recent updates -
+
+#### Update 005
+- Auto LLM assignment to agent upon unavailability of choosen LLM.
+- Intimation of LLM change via email.
 
 #### Update 004
 - UI redesign for an enhanced experience
@@ -34,19 +51,4 @@ The service only provides backend functionality. API to fetch responses is speci
 - The number of agents per account is now capped at a hundred.
 - An initial cost of account creation is to be charged (amount TBD).
 
-## Upcoming updates -
-- Improved rate limits
-- Faster responses
-- Responsive UI
 
-## Stack -
-- Flask (Backend framework)
-- Vue (Frontend framework)
-- TailwindCSS (Styling)
-- PostgreSQL - NeonDB (Database)
-- Render (Hosting)
-- LangGraph (AI agent architecture)
-- Redis (Caching)
-- https://resend.com (Email sharing)
-- https://replicate.com (LLM Inference)
-- https://app.pinecone.io (VectorDB)
