@@ -33,6 +33,7 @@ The service only provides backend functionality. API to fetch responses is speci
 #### Update 005
 - Auto LLM assignment to agent upon unavailability of choosen LLM.
 - Intimation of LLM change via email.
+- UI is now responsive to smaller screens.
 
 #### Update 004
 - UI redesign for an enhanced experience
