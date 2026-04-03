@@ -235,7 +235,7 @@ onMounted(() => {
     
           <button
             @click="showCreate = true"
-            class="bg-white px-4 py-2 rounded-lg hover:bg-sky-200 whitespace-nowrap"
+            class="text-black bg-white px-4 py-2 rounded-lg hover:bg-sky-200 whitespace-nowrap"
           >
             New Agent
           </button>
