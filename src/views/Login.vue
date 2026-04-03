@@ -113,9 +113,9 @@ const login = async () => {
             </form>
             <p class="text-sm text-gray-500 mt-6">
                 Don't have an account?
-                <a href="/signup-page" class="text-white font-medium hover:underline">
+                <router-link to="/signup-page" class="text-white font-medium hover:underline">
                 Sign up
-                </a>
+                </router-link>
             </p>
             </div>
 
