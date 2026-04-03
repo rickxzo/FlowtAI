@@ -38,7 +38,7 @@ const checkAuth = async () => {
   }
 }
 
-onMounted(async () => {
+onMounted(() => {
   checkAuth()
   fetchBalance()
 })
