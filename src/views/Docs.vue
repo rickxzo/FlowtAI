@@ -88,6 +88,16 @@
           Agent once deleted cannot be recovered.
         </p>
       </div>
+      <div>
+        <h1 class="text-4xl font-semibold mb-2" style="font-family:'Space Grotesk';">Pricing</h1>
+        <p class="text-zinc-400">
+          Our website maintains an balance in your account, from which your expenditure is deducted.<br>
+          A minimum balance of $0.05 is to be maintained.<br>
+          We charge a 10% markup over the cost's incurred for LLM inference.<br>
+          For example: If your agent uses 1000 tokens, you'll be charged for 1100 tokens.<br>
+          No separate charges are currently implemented for data storage as of now.<br>
+        </p>
+      </div>
 
     </div>
   </div>
