@@ -228,9 +228,9 @@ const login = async () => {
             </form>
             <p class="text-sm text-gray-500 mt-6">
                 Don't have an account?
-                <a href="/login" class="text-white font-medium hover:underline">
+                <router-link to="/login" class="text-white font-medium hover:underline">
                 Login
-                </a>
+                </router-link>
             </p>
             </div>
 
