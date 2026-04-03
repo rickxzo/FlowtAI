@@ -39,11 +39,8 @@ const checkAuth = async () => {
 }
 
 onMounted(async () => {
-  await checkAuth()
-
-  if (loggedIn.value) {
-    fetchBalance()
-  }
+  checkAuth()
+  fetchBalance()
 })
 
 const pay = () => {
@@ -89,22 +86,22 @@ const cardClass = (amount) => {
     <div v-else>
 
       <!-- Balance Section -->
-<div class="max-w-4xl mx-auto mb-6">
-  <div class="border border-zinc-800 p-6 flex justify-between items-center bg-zinc-900/40">
-    
-    <div>
-      <p class="text-gray-400 text-sm">Current Balance</p>
-      <p class="text-2xl font-semibold mt-1">
-        {{ balance !== null ? "₹" + balance.toFixed(2) : "Loading..." }}
-      </p>
-    </div>
-
-    <div class="text-right text-sm text-gray-500">
-      Available credits
-    </div>
-
-  </div>
-</div>
+      <div class="max-w-4xl mx-auto mb-6">
+        <div class="border border-zinc-800 p-6 flex justify-between items-center bg-zinc-900/40">
+          
+          <div>
+            <p class="text-gray-400 text-sm">Current Balance</p>
+            <p class="text-2xl font-semibold mt-1">
+              {{ balance !== null ? "₹" + balance.toFixed(2) : "Loading..." }}
+            </p>
+          </div>
+      
+          <div class="text-right text-sm text-gray-500">
+            Available credits
+          </div>
+      
+        </div>
+      </div>
 
       <!-- Header -->
       <div class="max-w-4xl mx-auto mb-8">
