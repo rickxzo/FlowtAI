@@ -116,7 +116,7 @@ const login = async () => {
     <div class="min-h-[92vh] w-full flex flex-col lg:flex-row text-white mt-12">
 
   <!-- LEFT SECTION -->
-        <div class="w-full lg:w-1/2 bg-zinc-950 flex items-center justify-center px-8 ">
+        <div class="w-full lg:w-1/2 bg-zinc-950 flex items-center justify-center px-8 mt-24 sm:mt-0">
 
             <div class="w-full max-w-md">
 
