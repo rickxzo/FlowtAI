@@ -7,6 +7,22 @@ const selected = ref(150)
 const loggedIn = ref(null) // null = loading, true/false after fetch
 const username = ref("")
 
+const balance = ref(null)
+
+const fetchBalance = async () => {
+  try {
+    const res = await fetch("https://flowtai-1.onrender.com/balance", {
+      credentials: "include"
+    })
+    const data = await res.json()
+
+    balance.value = data.balance
+  } catch (err) {
+    console.error(err)
+    balance.value = 0
+  }
+}
+
 const checkAuth = async () => {
   try {
     const res = await fetch("https://flowtai-1.onrender.com/logged-in", {
@@ -23,7 +39,11 @@ const checkAuth = async () => {
 }
 
 onMounted(() => {
-  checkAuth()
+  await checkAuth()
+
+  if (loggedIn.value) {
+    fetchBalance()
+  }
 })
 
 const pay = () => {
@@ -67,6 +87,24 @@ const cardClass = (amount) => {
 
     <!-- Logged In -->
     <div v-else>
+
+      <!-- Balance Section -->
+<div class="max-w-4xl mx-auto mb-6">
+  <div class="border border-zinc-800 p-6 flex justify-between items-center bg-zinc-900/40">
+    
+    <div>
+      <p class="text-gray-400 text-sm">Current Balance</p>
+      <p class="text-2xl font-semibold mt-1">
+        {{ balance !== null ? "₹" + balance.toFixed(2) : "Loading..." }}
+      </p>
+    </div>
+
+    <div class="text-right text-sm text-gray-500">
+      Available credits
+    </div>
+
+  </div>
+</div>
 
       <!-- Header -->
       <div class="max-w-4xl mx-auto mb-8">
