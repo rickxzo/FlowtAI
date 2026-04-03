@@ -57,7 +57,8 @@
         <h2 class="text-2xl font-semibold" style="font-family:'Space Grotesk';">Use Agent</h2>
         <p class="text-zinc-400">
           Copy agent ID and send requests via:<br><br>
-          <i class="text-indigo-400">https://{domain-name}/respond?agent_id={agent-id}&input={your-input}</i>
+          <i class="text-indigo-400">https://flowtai-1.onrender.com/respond?agent_id={agent-id}&input={your-input}</i><br>
+          The link is copied by default upto '&input=' for convinience.
         </p>
       </div>
 
