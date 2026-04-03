@@ -38,7 +38,7 @@ const checkAuth = async () => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   await checkAuth()
 
   if (loggedIn.value) {
