@@ -342,6 +342,55 @@ def add_headers(response):
     response.headers['Access-Control-Allow-Origin'] = 'https://flowtai.onrender.com'
     return response
 
+from flask import request
+
+@app.route("/chat-widget")
+def chat_widget():
+    return """
+    <html>
+      <body style="font-family: Arial; padding: 10px;">
+        <h3>FlowtAI Chat</h3>
+
+        <input id="msg" placeholder="Type..." />
+        <button onclick="send()">Send</button>
+
+        <div id="chat"></div>
+
+        <script>
+          const params = new URLSearchParams(window.location.search);
+          const agentId = params.get("agent_id") || "test";
+
+          // simple convo id (can improve later)
+          const convoId = Math.floor(Math.random() * 100000);
+
+          async function send() {
+            const input = document.getElementById("msg");
+            const chat = document.getElementById("chat");
+
+            const userText = input.value;
+
+            // show user message
+            chat.innerHTML += "<p><b>You:</b> " + userText + "</p>";
+
+            try {
+              const res = await fetch(
+                `/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=${convoId}`
+              );
+
+              const data = await res.text();
+
+              chat.innerHTML += "<p><b>Bot:</b> " + data + "</p>";
+            } catch (err) {
+              chat.innerHTML += "<p style='color:red;'>Error connecting to server</p>";
+            }
+
+            input.value = "";
+          }
+        </script>
+      </body>
+    </html>
+    """
+
 @app.route('/respond', methods=['POST', 'GET'])     
 def respond():
     try:
