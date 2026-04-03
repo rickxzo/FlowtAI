@@ -262,7 +262,7 @@ onMounted(() => {
     <div v-else class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
       <div v-for="agent in filteredAgents" :key="agent.id"
-        class="bg-zinc-950 rounded-xl p-6 space-y-4 border border-gray-500">
+        class="bg-zinc-950 rounded-xl p-6 space-y-4 border border-gray-900">
 
         <div>
           <div class="flex items-center gap-2">
@@ -312,7 +312,7 @@ onMounted(() => {
 
         <button @click="uploadKB"
           :disabled="isSubmitting"
-          class="px-4 py-2 bg-blue-600 rounded-lg">
+          class="px-4 py-2 bg-blue-600 rounded-lg text-black">
           {{ isSubmitting ? "Processing..." : "Upload" }}
         </button>
       </div>
