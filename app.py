@@ -57,7 +57,7 @@ def semantic_chunk(text):
 import threading
 
 def post_process(user_id, agent_id, convo_id, reply, ipt, opt, user_input, input_cost, output_cost):
-    cost = input_cost/1000000 * ipt + output_cost/1000000 * opt
+    cost = (input_cost/1000000 * ipt + output_cost/1000000 * opt) * 1.1
 
     conn = connect_db()
     cursor = conn.cursor()
