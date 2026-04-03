@@ -652,6 +652,9 @@ def agents():
     try:
         if 'userid' not in session or not session.get('verified', False):
             return "Unauthorized", 401
+        agents=json.loads(r.get(f"{session["username"]}_agents"))
+        if agents is not None:
+            return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8]} for a in agents]}, 200
         conn = connect_db()
         if conn == 404:
             return "Database connection error", 500
@@ -668,6 +671,7 @@ def agents():
         agents = cursor.fetchall()
         cursor.close()
         conn.close()
+        r.set(f"{session["username"]}_agents", json.dumps(agents), ex=300)
         return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8]} for a in agents]}, 200
     except Exception as e:
         #print(f"Error fetching agents: {e}")
@@ -709,6 +713,7 @@ def create_agent():
                 } 
             ]
         )
+        r.delete(f"{session["username"]}_agents")
         return "Agent created successfully", 200
     except Exception as e:
         #print(f"Error creating agent: {e}")
@@ -737,6 +742,7 @@ def edit_agent():
         conn.commit()
         cursor.close()
         conn.close()
+        r.delete(f"{session["username"]}_agents")
         return "Agent updated successfully", 200
     except Exception as e:
         #print(f"Error editing agent: {e}")
@@ -822,6 +828,7 @@ def delete_agent():
         conn.commit()
         cursor.close()
         conn.close()
+        r.delete(f"{session["username"]}_agents")
         return "Agent deleted successfully", 200
     except Exception as e:
         logger.error(f"Error deleting agent: {e}")
