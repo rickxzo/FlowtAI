@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from flask_cors import CORS
 import time
+import requests
 
 load_dotenv()
 import random
@@ -314,6 +315,24 @@ r = redis.Redis(
     username="default",
     password=os.getenv("REDIS_PASS"),
 )
+
+from apscheduler.schedulers.background import BackgroundScheduler
+def keepalive():
+    URLS = [
+    "https://flowtai.onrender.com",
+    "https://flowtai-1.onrender.com"
+    ]
+    for url in URLS:
+        try:
+            response = requests.get(url, timeout=10)
+            logger.error("keep alive.")
+        except Exception as e:
+            logger.error(f"{url} failed: {e}")
+    
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=keepalive, trigger="interval", seconds=90)
+scheduler.start()
 
 print("IMPORTS DONE")
 
