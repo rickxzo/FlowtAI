@@ -298,7 +298,7 @@ compiled_graph = chat_graph.compile()
 
 
 from flask import Flask, Response, jsonify, request, session, render_template, redirect, url_for
-app = Flask(__name__, template_folder='.', static_folder='.')
+app = Flask(__name__, template_folder='.', static_folder='static')
 CORS(app,
      supports_credentials=True,
      origins=["https://flowtai.onrender.com"])
