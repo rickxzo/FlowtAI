@@ -262,7 +262,7 @@ onMounted(() => {
     <div v-else class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
       <div v-for="agent in filteredAgents" :key="agent.id"
-        class="bg-zinc-950 rounded-xl p-6 space-y-4 border border-indigo-300">
+        class="bg-zinc-950 rounded-xl p-6 space-y-4 border border-gray-500">
 
         <div>
           <div class="flex items-center gap-2">
