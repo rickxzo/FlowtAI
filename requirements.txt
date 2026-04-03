@@ -7,3 +7,4 @@ langgraph
 dotenv
 resend
 redis
+apscheduler
