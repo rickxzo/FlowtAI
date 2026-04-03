@@ -235,7 +235,7 @@ onMounted(() => {
     
           <button
             @click="showCreate = true"
-            class="bg-blue-700 px-4 py-2 rounded-lg hover:bg-blue-600 whitespace-nowrap"
+            class="bg-white px-4 py-2 rounded-lg hover:bg-sky-200 whitespace-nowrap"
           >
             New Agent
           </button>
@@ -262,13 +262,14 @@ onMounted(() => {
     <div v-else class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
       <div v-for="agent in filteredAgents" :key="agent.id"
-        class="bg-zinc-950 rounded-xl p-6 space-y-4 border">
+        class="bg-zinc-950 rounded-xl p-6 space-y-4 border border-indigo-300">
 
         <div>
           <div class="flex items-center gap-2">
             <h2 class="text-lg font-semibold">{{ agent.name }}</h2>
-            <span :class="agent.active ? 'bg-green-500' : 'bg-red-500'"
-              class="w-3 h-3 rounded-full"></span>
+            <span :class="agent.active ? 'text-green-500' : 'text-red-500'">
+              {{ agent.active ? '[Active]' : '[Inactive]' }}
+            </span>
           </div>
 
           <p class="text-sm text-zinc-400 text-left">{{ agent.model }}</p>
@@ -276,10 +277,10 @@ onMounted(() => {
         </div>
 
         <div class="flex justify-between pt-2">
-          <button @click="copyId(agent.id)" class="text-green-400 text-sm">Copy ID</button>
-          <button @click="editAgent(agent)" class="text-blue-400 text-sm">Edit</button>
+          <button @click="copyId(agent.id)" class="text-white text-sm">Copy ID</button>
+          <button @click="editAgent(agent)" class="text-white text-sm">Edit</button>
           <button @click="openDelete(agent.id)" class="text-red-400 text-sm">Delete</button>
-          <button @click="openUpload(agent.id)" class="text-yellow-400 text-sm">Upload</button>
+          <button @click="openUpload(agent.id)" class="text-white text-sm">Upload</button>
         </div>
 
       </div>
