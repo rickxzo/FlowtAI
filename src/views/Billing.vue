@@ -87,17 +87,13 @@ const cardClass = (amount) => {
 
       <!-- Balance Section -->
       <div class="max-w-4xl mx-auto mb-6">
-        <div class="border border-zinc-800 p-6 flex justify-between items-center bg-zinc-900/40">
+        <div class="border border-zinc-800 p-6 flex justify-between items-center">
           
           <div>
             <p class="text-gray-400 text-sm">Current Balance</p>
             <p class="text-2xl font-semibold mt-1">
-              {{ balance !== null ? "₹" + balance.toFixed(2) : "Loading..." }}
+              {{ balance !== null ? "$" + balance.toFixed(2) : "Loading..." }}
             </p>
-          </div>
-      
-          <div class="text-right text-sm text-gray-500">
-            Available credits
           </div>
       
         </div>
