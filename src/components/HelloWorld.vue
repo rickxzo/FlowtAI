@@ -21,7 +21,7 @@ import Aurora from './ColorBends.vue'
     <section class="min-h-screen px-6 md:px-16 grid md:grid-cols-2 gap-10 items-center">
 
       <!-- LEFT SIDE -->
-      <div class="max-w-xl text-left">
+      <div class="max-w-xl text-left mt-16 sm:mt-0">
         <h1 class="text-2xl md:text-4xl font-bold leading-tight" style="font-family: 'Space Grotesk';">
           Sip some coffee,<br> build an AI agent in minutes!
         </h1>
