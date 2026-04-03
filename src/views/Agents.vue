@@ -267,7 +267,7 @@ onMounted(() => {
         <div>
           <div class="flex items-center gap-2">
             <h2 class="text-lg font-semibold">{{ agent.name }}</h2>
-            <span :class="agent.active ? 'text-green-500' : 'text-red-500'">
+            <span :class="agent.active ? 'text-green-500' : 'text-red-500'" class="text-xs">
               {{ agent.active ? '[Active]' : '[Inactive]' }}
             </span>
           </div>
