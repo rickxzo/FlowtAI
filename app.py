@@ -646,6 +646,20 @@ def logged_in():
     else:
         return jsonify({"logged_in": False})
 
+@app.route('/balance'. methods=['POST', 'GET'])
+def balance():
+    try:
+        if 'userid' not in session or not session.get('verified', False):
+            return "Unauthorized", 401
+        conn = connect_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT balance FROM users WHERE id = %s", (session['userid'],))
+        balance = float(cursor.fetchone()[0])
+        return jsonify({
+            "balance":  balance
+        }), 200
+    except Exception as e:
+        logger.info("Error in fetching balance: ", e)
 
 @app.route('/agents', methods=['POST', 'GET'])
 def agents():
