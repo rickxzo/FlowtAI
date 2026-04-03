@@ -646,7 +646,7 @@ def logged_in():
     else:
         return jsonify({"logged_in": False})
 
-@app.route('/balance'. methods=['POST', 'GET'])
+@app.route('/balance', methods=['POST', 'GET'])
 def balance():
     try:
         if 'userid' not in session or not session.get('verified', False):
