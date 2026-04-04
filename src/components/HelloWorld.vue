@@ -3,7 +3,7 @@ import Aurora from './ColorBends.vue'
 </script>
 
 <template>
-  <div class="relative text-white">
+  <div class="relative text-white bg-black">
 
     <!-- Fixed Aurora -->
     <div class="fixed inset-0 z-5">
