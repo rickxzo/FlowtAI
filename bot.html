@@ -4,20 +4,31 @@
   <meta charset="UTF-8" />
   <title>FlowtAI Chat</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Hide scrollbar */
+    #chat::-webkit-scrollbar {
+      width: 0px;
+    }
+    #chat {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
 </head>
 
-<body class="bg-zinc-950 text-white flex items-center justify-center h-screen">
+<body class="bg-zinc-200 flex items-center justify-center h-screen">
 
-  <div class="w-full max-w-md h-[620px] bg-zinc-900 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+  <div class="w-full max-w-md h-[620px] bg-white rounded-3xl border border-zinc-300 shadow-md flex flex-col overflow-hidden">
 
     <!-- Header -->
-    <div class="px-5 py-4 border-b border-zinc-800 flex items-center justify-between">
-      <h2 class="text-lg font-semibold tracking-tight">FlowtAI</h2>
-      <span class="text-xs text-green-400">● Online</span>
+    <div class="px-5 py-4 border-b border-zinc-200 flex items-center justify-between bg-white">
+      <h2 class="text-lg font-semibold text-zinc-800">FlowtAI</h2>
+      <span class="text-xs text-green-500">● Online</span>
     </div>
 
     <!-- Chat -->
-    <div id="chat" class="flex-1 overflow-y-auto px-4 py-6 space-y-4 text-sm">
+    <div id="chat" class="flex-1 overflow-y-auto px-4 py-6 space-y-4 text-sm bg-zinc-50">
 
       <!-- Empty state -->
       <div id="emptyState" class="h-full flex items-center justify-center text-center text-zinc-400">
@@ -27,20 +38,23 @@
     </div>
 
     <!-- Input -->
-    <div class="p-3 border-t border-zinc-800 bg-zinc-900">
-      <div class="flex items-center gap-2 bg-zinc-800 rounded-xl px-3 py-2">
+    <div class="p-3 border-t border-zinc-200 bg-white">
+      <div class="flex items-center gap-2 bg-zinc-100 rounded-xl px-3 py-2 border border-zinc-200">
+
         <input
           id="msg"
           placeholder="Ask anything..."
-          class="flex-1 bg-transparent outline-none text-sm placeholder-zinc-400"
+          class="flex-1 bg-transparent outline-none text-sm text-zinc-700 placeholder-zinc-400"
           onkeydown="if(event.key==='Enter') send()"
         />
+
         <button
           onclick="send()"
-          class="bg-white text-black px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-zinc-200 transition"
+          class="bg-zinc-900 text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-zinc-700 transition"
         >
           ↑
         </button>
+
       </div>
     </div>
 
@@ -50,7 +64,6 @@
     const params = new URLSearchParams(window.location.search);
     const agentId = params.get("agent_id") || "test";
 
-    // Better convo_id handling (persists per session)
     let convoId = localStorage.getItem("flowt_convo");
     if (!convoId) {
       convoId = Math.floor(Math.random() * 1000000);
@@ -69,9 +82,14 @@
         : "flex justify-start";
 
       const bubble = document.createElement("div");
-      bubble.className = sender === "user"
-        ? "max-w-[75%] bg-white text-black px-4 py-2 rounded-2xl rounded-br-md"
-        : "max-w-[75%] bg-zinc-800 px-4 py-2 rounded-2xl rounded-bl-md";
+
+      if (sender === "user") {
+        bubble.className =
+          "max-w-[75%] bg-zinc-900 text-white px-4 py-2 rounded-2xl rounded-br-md";
+      } else {
+        bubble.className =
+          "max-w-[75%] bg-zinc-200 text-zinc-800 px-4 py-2 rounded-2xl rounded-bl-md";
+      }
 
       bubble.innerText = text;
 
@@ -96,7 +114,8 @@
         );
 
         const data = await res.text();
-        addMessage("bot", data);
+
+        addMessage("bot", data.replace(/^data:\s*/, "")); // fixes your "data:" issue
 
       } catch (err) {
         addMessage("bot", "⚠️ Error connecting to server");
