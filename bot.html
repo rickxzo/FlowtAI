@@ -61,67 +61,126 @@
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const agentId = params.get("agent_id") || "test";
+  const params = new URLSearchParams(window.location.search);
+  const agentId = params.get("agent_id") || "test";
 
-    let convoId = localStorage.getItem("flowt_convo");
-    if (!convoId) {
-      convoId = Math.floor(Math.random() * 1000000);
-      localStorage.setItem("flowt_convo", convoId);
-    }
+  let convoId = localStorage.getItem("flowt_convo");
+  if (!convoId) {
+    convoId = Math.floor(Math.random() * 1000000);
+    localStorage.setItem("flowt_convo", convoId);
+  }
 
-    function addMessage(sender, text) {
-      const chat = document.getElementById("chat");
-      const empty = document.getElementById("emptyState");
+  function createBotMessageContainer() {
+    const chat = document.getElementById("chat");
+    const empty = document.getElementById("emptyState");
+    if (empty) empty.remove();
 
-      if (empty) empty.remove();
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex justify-start";
 
-      const wrapper = document.createElement("div");
-      wrapper.className = sender === "user"
-        ? "flex justify-end"
-        : "flex justify-start";
+    const bubble = document.createElement("div");
+    bubble.className =
+      "max-w-[75%] bg-zinc-200 text-zinc-800 px-4 py-3 rounded-2xl rounded-bl-md space-y-1";
 
-      const bubble = document.createElement("div");
+    wrapper.appendChild(bubble);
+    chat.appendChild(wrapper);
 
-      if (sender === "user") {
-        bubble.className =
-          "max-w-[75%] bg-zinc-900 text-white px-4 py-2 rounded-2xl rounded-br-md";
-      } else {
-        bubble.className =
-          "max-w-[75%] bg-zinc-200 text-zinc-800 px-4 py-2 rounded-2xl rounded-bl-md";
+    return bubble;
+  }
+
+  function addUserMessage(text) {
+    const chat = document.getElementById("chat");
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex justify-end";
+
+    const bubble = document.createElement("div");
+    bubble.className =
+      "max-w-[75%] bg-zinc-900 text-white px-4 py-2 rounded-2xl rounded-br-md";
+
+    bubble.innerText = text;
+
+    wrapper.appendChild(bubble);
+    chat.appendChild(wrapper);
+
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  async function send() {
+    const input = document.getElementById("msg");
+    const userText = input.value.trim();
+
+    if (!userText) return;
+
+    addUserMessage(userText);
+    input.value = "";
+
+    const bubble = createBotMessageContainer();
+
+    let isFinal = false;
+    let finalTextNode = null;
+
+    try {
+      const res = await fetch(
+        `https://flowtai-1.onrender.com/respond?agent_id=73ed20a1-091a-4b5a-a676-ad86377d8bad&input=${encodeURIComponent(userText)}&convo=67`
+      );
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+
+        // Split lines (important for SSE-style)
+        const lines = chunk.split("\n").filter(line => line.trim() !== "");
+
+        for (let line of lines) {
+          if (line.startsWith("data:")) {
+            isFinal = true;
+
+            const clean = line.replace(/^data:\s*/, "");
+
+            // create final text node if not exists
+            if (!finalTextNode) {
+              finalTextNode = document.createElement("div");
+              finalTextNode.className = "text-zinc-800";
+              bubble.appendChild(finalTextNode);
+            }
+
+            finalTextNode.innerText += clean;
+          } else {
+            // intermediate thoughts
+            if (!isFinal) {
+              const step = document.createElement("div");
+              step.className = "text-zinc-400 text-xs";
+              step.innerText = line;
+              bubble.appendChild(step);
+            } else {
+              // after data:, keep appending
+              if (!finalTextNode) {
+                finalTextNode = document.createElement("div");
+                finalTextNode.className = "text-zinc-800";
+                bubble.appendChild(finalTextNode);
+              }
+
+              finalTextNode.innerText += line;
+            }
+          }
+        }
+
+        // auto scroll
+        const chat = document.getElementById("chat");
+        chat.scrollTop = chat.scrollHeight;
       }
 
-      bubble.innerText = text;
-
-      wrapper.appendChild(bubble);
-      chat.appendChild(wrapper);
-
-      chat.scrollTop = chat.scrollHeight;
+    } catch (err) {
+      bubble.innerHTML = `<span class="text-red-500">⚠️ Error streaming response</span>`;
     }
-
-    async function send() {
-      const input = document.getElementById("msg");
-      const userText = input.value.trim();
-
-      if (!userText) return;
-
-      addMessage("user", userText);
-      input.value = "";
-
-      try {
-        const res = await fetch(
-          `/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=${convoId}`
-        );
-
-        const data = await res.text();
-
-        addMessage("bot", data.replace(/^data:\s*/, "")); // fixes your "data:" issue
-
-      } catch (err) {
-        addMessage("bot", "⚠️ Error connecting to server");
-      }
-    }
-  </script>
+  }
+</script>
 
 </body>
 </html>
