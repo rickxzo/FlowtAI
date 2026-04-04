@@ -48,7 +48,7 @@
 
     // 🔥 BETTER SIZE
     width: "380px",
-    height: "600px",
+    height: "620px",
 
     // 🔥 SOFTER LOOK
     border: "1px solid #e5e7eb",
