@@ -351,8 +351,6 @@ def chat_widget():
 @app.route('/respond', methods=['POST', 'GET'])     
 def respond():
     try:
-        if 'userid' not in session or not session.get('verified', False):
-            return "Unauthorized", 401
         agent_id = request.args.get('agent_id')
         user_input = request.args.get('input')
         convo_id = request.args.get('convo')
