@@ -1,44 +1,81 @@
-
 (function () {
   const script = document.currentScript;
   const agentId = script.getAttribute("data-agent-id");
 
-  // Create chat button
+  // Chat Button
   const button = document.createElement("div");
-  button.innerText = "💬";
-  button.style.position = "fixed";
-  button.style.bottom = "20px";
-  button.style.right = "20px";
-  button.style.width = "60px";
-  button.style.height = "60px";
-  button.style.background = "#000";
-  button.style.color = "#fff";
-  button.style.borderRadius = "50%";
-  button.style.display = "flex";
-  button.style.alignItems = "center";
-  button.style.justifyContent = "center";
-  button.style.cursor = "pointer";
-  button.style.zIndex = "9999";
+  button.innerHTML = `
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+        stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `;
+
+  Object.assign(button.style, {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    width: "56px",
+    height: "56px",
+    background: "#18181b", // zinc-900
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    zIndex: "9999",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+    transition: "all 0.2s ease"
+  });
+
+  // Hover effect
+  button.onmouseenter = () => {
+    button.style.transform = "scale(1.05)";
+  };
+  button.onmouseleave = () => {
+    button.style.transform = "scale(1)";
+  };
 
   document.body.appendChild(button);
 
-  // Create iframe (hidden initially)
+  // Iframe
   const iframe = document.createElement("iframe");
   iframe.src = `https://flowtai-1.onrender.com/chat-widget?agent_id=${agentId}`;
-  iframe.style.position = "fixed";
-  iframe.style.bottom = "90px";
-  iframe.style.right = "20px";
-  iframe.style.width = "350px";
-  iframe.style.height = "500px";
-  iframe.style.border = "none";
-  iframe.style.display = "none";
-  iframe.style.zIndex = "9999";
+
+  Object.assign(iframe.style, {
+    position: "fixed",
+    bottom: "90px",
+    right: "20px",
+    width: "360px",
+    height: "520px",
+    border: "1px solid #e4e4e7", // subtle border
+    borderRadius: "20px",
+    display: "none",
+    zIndex: "9999",
+    background: "#fff",
+    boxShadow: "0 20px 50px rgba(0,0,0,0.15)",
+    overflow: "hidden"
+  });
 
   document.body.appendChild(iframe);
 
-  // Toggle on click
+  // Toggle
+  let isOpen = false;
+
   button.onclick = () => {
-    iframe.style.display =
-      iframe.style.display === "none" ? "block" : "none";
+    isOpen = !isOpen;
+    iframe.style.display = isOpen ? "block" : "none";
+
+    // subtle animation
+    if (isOpen) {
+      iframe.style.transform = "translateY(10px)";
+      iframe.style.opacity = "0";
+
+      setTimeout(() => {
+        iframe.style.transition = "all 0.2s ease";
+        iframe.style.transform = "translateY(0)";
+        iframe.style.opacity = "1";
+      }, 10);
+    }
   };
 })();
