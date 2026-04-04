@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FlowtAI Chat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-zinc-950 text-white flex items-center justify-center h-screen">
+
+  <div class="w-full max-w-md h-[600px] bg-zinc-900 rounded-2xl shadow-lg flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <div class="p-4 border-b border-zinc-800 flex items-center justify-between">
+      <h2 class="text-lg font-semibold">FlowtAI Chat</h2>
+      <span class="text-xs text-green-400">● Online</span>
+    </div>
+
+    <!-- Chat messages -->
+    <div id="chat" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
+      <!-- messages will appear here -->
+    </div>
+
+    <!-- Input -->
+    <div class="p-3 border-t border-zinc-800 flex gap-2">
+      <input
+        id="msg"
+        placeholder="Type your message..."
+        class="flex-1 bg-zinc-800 px-3 py-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <button
+        onclick="send()"
+        class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-medium"
+      >
+        Send
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const agentId = params.get("agent_id") || "test";
+    const convoId = Math.floor(Math.random() * 100000);
+
+    function addMessage(sender, text) {
+      const chat = document.getElementById("chat");
+
+      const wrapper = document.createElement("div");
+      wrapper.className = sender === "user"
+        ? "text-right"
+        : "text-left";
+
+      const bubble = document.createElement("div");
+      bubble.className = sender === "user"
+        ? "inline-block bg-blue-600 px-3 py-2 rounded-lg"
+        : "inline-block bg-zinc-800 px-3 py-2 rounded-lg";
+
+      bubble.innerText = text;
+
+      wrapper.appendChild(bubble);
+      chat.appendChild(wrapper);
+
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function send() {
+      const input = document.getElementById("msg");
+      const userText = input.value.trim();
+
+      if (!userText) return;
+
+      addMessage("user", userText);
+      input.value = "";
+
+      try {
+        const res = await fetch(
+          `/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=${convoId}`
+        );
+
+        const data = await res.text();
+        addMessage("bot", data);
+
+      } catch (err) {
+        addMessage("bot", "⚠️ Error connecting to server");
+      }
+    }
+  </script>
+
+</body>
+</html>
