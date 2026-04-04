@@ -304,3 +304,13 @@ code {
 .fade-leave-to {
   opacity: 0;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
