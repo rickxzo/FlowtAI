@@ -2,10 +2,10 @@
   const script = document.currentScript;
   const agentId = script.getAttribute("data-agent-id");
 
-  // Chat Button
+  // BUTTON
   const button = document.createElement("div");
   button.innerHTML = `
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
       <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
         stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
@@ -17,20 +17,19 @@
     right: "20px",
     width: "56px",
     height: "56px",
-    background: "#18181b", // zinc-900
+    background: "#18181b",
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
     zIndex: "9999",
-    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+    boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
     transition: "all 0.2s ease"
   });
 
-  // Hover effect
   button.onmouseenter = () => {
-    button.style.transform = "scale(1.05)";
+    button.style.transform = "scale(1.06)";
   };
   button.onmouseleave = () => {
     button.style.transform = "scale(1)";
@@ -38,7 +37,7 @@
 
   document.body.appendChild(button);
 
-  // Iframe
+  // IFRAME
   const iframe = document.createElement("iframe");
   iframe.src = `https://flowtai-1.onrender.com/chat-widget?agent_id=${agentId}`;
 
@@ -46,36 +45,52 @@
     position: "fixed",
     bottom: "90px",
     right: "20px",
-    width: "360px",
-    height: "520px",
-    border: "1px solid #e4e4e7", // subtle border
-    borderRadius: "20px",
+
+    // 🔥 BETTER SIZE
+    width: "380px",
+    height: "600px",
+
+    // 🔥 SOFTER LOOK
+    border: "1px solid #e5e7eb",
+    borderRadius: "24px",
+    background: "#fafafa",
+
+    // 🔥 DEPTH
+    boxShadow: "0 25px 60px rgba(0,0,0,0.18)",
+
     display: "none",
     zIndex: "9999",
-    background: "#fff",
-    boxShadow: "0 20px 50px rgba(0,0,0,0.15)",
-    overflow: "hidden"
+    overflow: "hidden",
+
+    // animation base
+    transform: "translateY(20px) scale(0.98)",
+    opacity: "0",
+    transition: "all 0.25s ease"
   });
 
   document.body.appendChild(iframe);
 
-  // Toggle
+  // TOGGLE
   let isOpen = false;
 
   button.onclick = () => {
     isOpen = !isOpen;
-    iframe.style.display = isOpen ? "block" : "none";
 
-    // subtle animation
     if (isOpen) {
-      iframe.style.transform = "translateY(10px)";
+      iframe.style.display = "block";
+
+      requestAnimationFrame(() => {
+        iframe.style.transform = "translateY(0) scale(1)";
+        iframe.style.opacity = "1";
+      });
+
+    } else {
+      iframe.style.transform = "translateY(20px) scale(0.98)";
       iframe.style.opacity = "0";
 
       setTimeout(() => {
-        iframe.style.transition = "all 0.2s ease";
-        iframe.style.transform = "translateY(0)";
-        iframe.style.opacity = "1";
-      }, 10);
+        iframe.style.display = "none";
+      }, 200);
     }
   };
 })();
