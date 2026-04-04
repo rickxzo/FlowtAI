@@ -5,14 +5,17 @@ const models = ref([])
 const search = ref('')
 const sort = ref('')
 const selected = ref(null)
+const isLoadingModels = ref(true)
 
 const loadModels = async () => {
   try {
     const res = await fetch('https://flowtai-1.onrender.com/show-models')
     const data = await res.json()
     models.value = data.models
+    isLoadingModels.value = false
   } catch (err) {
     console.error('Failed to load models', err)
+    isLoadingModels.value = false
   }
 }
 
@@ -79,11 +82,22 @@ onMounted(loadModels)
         </div>
       
       </div>
+
+      <div v-if="isLoadingAgents" class="text-zinc-400 text-left py-6">
+        Loading models...
+      </div>
+
       <!-- SCROLL AREA -->
       <div class="flex-1 overflow-y-auto">
         <div class="max-w-7xl mx-auto px-8 pb-10">
+          <div v-if="isLoadingModels" class="text-zinc-400 text-left py-6">
+            Loading models...
+          </div>
 
-          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div v-else-if="filteredModels.length === 0" class="text-zinc-500 text-left py-6">
+            No models to show here.
+          </div>
+          <div v-else class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
             <div
               v-for="model in filteredModels"
