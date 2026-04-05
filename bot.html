@@ -8,12 +8,16 @@
   <style>
     #chat::-webkit-scrollbar { width: 0px; }
     #chat { -ms-overflow-style: none; scrollbar-width: none; }
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
   </style>
 </head>
 
-<body class="bg-transparent flex items-center justify-center h-screen">
+<body class="bg-transparent flex items-center justify-center h-full m-0">
 
-  <div class="w-full max-w-md h-[620px] 
+  <div class="w-full max-w-md h-full
     bg-white/10 backdrop-blur-xl 
     rounded-3xl border border-white/20 
     shadow-xl flex flex-col overflow-hidden">
