@@ -139,7 +139,7 @@
 
     try {
       const res = await fetch(
-        `https://flowtai-1.onrender.com/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=67`
+        `https://flowtai-1.onrender.com/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=${convo_id}`
       );
 
       const reader = res.body.getReader();
