@@ -366,14 +366,14 @@ def respond():
             conn.close()
             return "Agent not found", 404
         model_id, namespace, prompt, active, userid = result
+        if active == False:
+            return "Agent is inactive"
         cursor.execute(
             "SELECT balance FROM users WHERE id = %s", (userid,)
         )
         balance = cursor.fetchone()[0]
         if balance < 0.05:
             return "Low balance"
-        if active == False:
-            return "Agent is inactive"
         cursor.execute("SELECT name, input, output FROM models WHERE id = %s", (model_id,))
         res = cursor.fetchone()
         model_name = res[0]
