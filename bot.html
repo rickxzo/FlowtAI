@@ -70,10 +70,10 @@
   const params = new URLSearchParams(window.location.search);
   const agentId = params.get("agent_id") || "test";
 
-  let convoId = localStorage.getItem("flowt_convo");
+  let convoId = sessionStorage.getItem("flowt_convo");
   if (!convoId) {
     convoId = Math.floor(Math.random() * 1000000);
-    localStorage.setItem("flowt_convo", convoId);
+    sessionStorage.setItem("flowt_convo", convoId);
   }
 
   function createBotMessageContainer() {
