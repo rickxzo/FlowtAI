@@ -355,7 +355,6 @@ def respond():
         user_input = request.args.get('input')
         convo_id = request.args.get('convo')
         convo_id = f"{agent_id}-{convo_id}"
-        user_id = session['userid']
         conn = connect_db()
         if conn == 404:
             return "Database connection error", 500
