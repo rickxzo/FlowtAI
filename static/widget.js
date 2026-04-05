@@ -42,32 +42,30 @@
   iframe.src = `https://flowtai-1.onrender.com/chat-widget?agent_id=${agentId}`;
 
   Object.assign(iframe.style, {
-    position: "fixed",
-    bottom: "90px",
-    right: "20px",
+  position: "fixed",
+  bottom: "90px",
+  right: "20px",
 
-    // 🔥 BETTER SIZE
-    width: "380px",
-    height: "620px",
+  width: "380px",
+  height: "625px",
 
-    // 🔥 SOFTER LOOK
-    border: "1px solid #e5e7eb",
-    borderRadius: "24px",
-    background: "#fafafa",
+  border: "1px solid rgba(255,255,255,0.2)",
+  borderRadius: "24px",
 
-    // 🔥 DEPTH
-    boxShadow: "0 25px 60px rgba(0,0,0,0.18)",
+  // ✨ translucent glass
+  background: "rgba(250, 250, 250, 0.6)",
+  backdropFilter: "blur(12px)",
 
-    display: "none",
-    zIndex: "9999",
-    overflow: "hidden",
+  boxShadow: "0 25px 60px rgba(0,0,0,0.18)",
 
-    // animation base
-    transform: "translateY(20px) scale(0.98)",
-    opacity: "0",
-    transition: "all 0.25s ease"
-  });
+  display: "none",
+  zIndex: "9999",
+  overflow: "hidden",
 
+  transform: "translateY(20px) scale(0.98)",
+  opacity: "0",
+  transition: "all 0.25s ease"
+});
   document.body.appendChild(iframe);
 
   // TOGGLE
