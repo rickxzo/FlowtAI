@@ -360,19 +360,19 @@ def respond():
         if conn == 404:
             return "Database connection error", 500
         cursor = conn.cursor()
-        cursor.execute(
-            "SELECT balance FROM users WHERE id = %s", (session['userid'],)
-        )
-        balance = cursor.fetchone()[0]
-        if balance < 0.05:
-            return "Low balance"
-        cursor.execute("SELECT model, namespace, prompt, active FROM Agents WHERE id = %s AND userid = %s", (agent_id, session['userid']))
+        cursor.execute("SELECT model, namespace, prompt, active, userid FROM Agents WHERE id = %s", (agent_id,))
         result = cursor.fetchone()
         if not result:
             cursor.close()
             conn.close()
             return "Agent not found", 404
-        model_id, namespace, prompt, active = result
+        model_id, namespace, prompt, active, userid = result
+        cursor.execute(
+            "SELECT balance FROM users WHERE id = %s", (userid,)
+        )
+        balance = cursor.fetchone()[0]
+        if balance < 0.05:
+            return "Low balance"
         if active == False:
             return "Agent is inactive"
         cursor.execute("SELECT name, input, output FROM models WHERE id = %s", (model_id,))
@@ -523,7 +523,7 @@ Return ONLY the JSON object.
 
                 #yield f"data: {json.dumps(event)}\n\n"
 
-        return Response(event_stream(user_id, convo_id, user_input), mimetype="text/event-stream")
+        return Response(event_stream(userid, convo_id, user_input), mimetype="text/event-stream")
         
     except Exception as e:
         #print(f"Error during response generation: {e}")
