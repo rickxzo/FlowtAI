@@ -359,13 +359,13 @@ def respond():
         if conn == 404:
             return "Database connection error", 500
         cursor = conn.cursor()
-        cursor.execute("SELECT model, namespace, prompt, active, userid FROM Agents WHERE id = %s", (agent_id,))
+        cursor.execute("SELECT A.model, A.namespace, A.prompt, A.active, A.userid, U.username FROM Agents A JOIN users U ON U.id = A.userid WHERE A.id = %s", (agent_id,))
         result = cursor.fetchone()
         if not result:
             cursor.close()
             conn.close()
             return "Agent not found", 404
-        model_id, namespace, prompt, active, userid = result
+        model_id, namespace, prompt, active, userid, username = result
         if active == False:
             return "Agent is inactive"
         cursor.execute(
@@ -483,7 +483,7 @@ Return ONLY the JSON object.
         
         Assistant = TextModel(model_name, system_prompt)
         
-        index = f"https://flowt-{session['username']}-rz0q9xs.svc.aped-4627-b74a.pinecone.io"
+        index = f"https://flowt-{username}-rz0q9xs.svc.aped-4627-b74a.pinecone.io"
         state = {
             "index": index,
             "assistant": Assistant,
