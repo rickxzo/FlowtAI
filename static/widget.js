@@ -53,29 +53,44 @@
   });
 
   // =========================
-  // GLASS WRAPPER (KEY FIX)
+  // WRAPPER (RESPONSIVE)
   // =========================
   const wrapper = document.createElement("div");
 
+  function applyResponsiveStyles() {
+    const isMobile = window.innerWidth < 640;
+
+    if (isMobile) {
+      // 📱 MOBILE → bottom sheet
+      Object.assign(wrapper.style, {
+        bottom: "0",
+        right: "0",
+        width: "100vw",
+        height: "100dvh",
+        borderRadius: "0px",
+      });
+    } else {
+      // 💻 DESKTOP
+      Object.assign(wrapper.style, {
+        bottom: "90px",
+        right: "20px",
+        width: "380px",
+        height: "560px",
+        borderRadius: "24px",
+      });
+    }
+  }
+
   Object.assign(wrapper.style, {
     position: "fixed",
-    bottom: "90px",
-    right: "20px",
 
-    // 🔥 SAME DIMENSIONS
-    width: "380px",
-    height: "560px",
-
-    borderRadius: "24px",
     border: "1px solid rgba(255,255,255,0.25)",
 
-    // ✅ REAL GLASS EFFECT
     background: "rgba(255,255,255,0.08)",
     backdropFilter: "blur(16px)",
     WebkitBackdropFilter: "blur(16px)",
 
     boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
-
     overflow: "hidden",
     display: "none",
     zIndex: "9999",
@@ -84,6 +99,9 @@
     opacity: "0",
     transition: "all 0.25s ease"
   });
+
+  applyResponsiveStyles();
+  window.addEventListener("resize", applyResponsiveStyles);
 
   wrapper.appendChild(iframe);
   document.body.appendChild(wrapper);
