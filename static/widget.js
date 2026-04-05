@@ -47,7 +47,7 @@
   right: "20px",
 
   width: "380px",
-  height: "625px",
+  height: "560px",
 
   border: "1px solid rgba(255,255,255,0.2)",
   borderRadius: "24px",
