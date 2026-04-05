@@ -360,7 +360,7 @@ def respond():
             return "Database connection error", 500
         cursor = conn.cursor()
         key = f"agent:{agent_id}"
-        data = redis_client.get(key)
+        data = r.get(key)
         if data:
             agent = json.loads(data)
             model_id, namespace, prompt, active, userid, username = (
@@ -379,7 +379,7 @@ def respond():
                 conn.close()
                 return "Agent not found", 404
             model_id, namespace, prompt, active, userid, username = result
-            redis_client.set(key, json.dumps({
+            r.set(key, json.dumps({
                 "model": model_id,
                 "namespace": namespace,
                 "prompt": prompt,
@@ -387,8 +387,6 @@ def respond():
                 "userid": userid,
                 "username": username
             }), ex=1800)
-        if active == False:
-            return "Agent is inactive"
         cursor.execute(
             "SELECT balance FROM users WHERE id = %s", (userid,)
         )
