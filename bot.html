@@ -6,6 +6,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
     /* Hide scrollbar */
     #chat::-webkit-scrollbar {
       width: 0px;
@@ -17,32 +22,30 @@
   </style>
 </head>
 
-<body class="bg-zinc-200 flex items-center justify-center h-screen">
+<body class="bg-transparent flex items-center justify-center h-full">
 
-  <div class="w-full max-w-md h-[620px] 
-  bg-white/10 backdrop-blur-xl 
-  rounded-3xl border border-white/20 
-  shadow-xl flex flex-col overflow-hidden">
+  <!-- MAIN CONTAINER -->
+  <div class="w-full max-w-md h-full 
+    bg-white/10 backdrop-blur-xl 
+    rounded-3xl border border-white/20 
+    shadow-xl flex flex-col overflow-hidden">
 
     <!-- Header -->
-    <div class="px-5 py-4 border-b border-zinc-200 flex items-center justify-between bg-white/10 backdrop-blur-md">
+    <div class="px-5 py-4 border-b border-white/20 flex items-center justify-between bg-white/10 backdrop-blur-md">
       <h2 class="text-lg font-semibold text-zinc-800">FlowtAI</h2>
       <span class="text-xs text-green-500">● Online</span>
     </div>
 
     <!-- Chat -->
     <div id="chat" class="flex-1 overflow-y-auto px-4 py-6 space-y-4 text-sm bg-white/5">
-
-      <!-- Empty state -->
       <div id="emptyState" class="h-full flex items-center justify-center text-center text-zinc-400">
         <p class="text-lg font-medium">What can I help with?</p>
       </div>
-
     </div>
 
     <!-- Input -->
-    <div class="p-3 border-t border-zinc-200 bg-white/10 backdrop-blur-md">
-      <div class="flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur-md rounded-xl px-3 py-2 border border-zinc-200">
+    <div class="p-3 border-t border-white/20 bg-white/10 backdrop-blur-md">
+      <div class="flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur-md rounded-xl px-3 py-2">
 
         <input
           id="msg"
@@ -83,7 +86,7 @@
 
     const bubble = document.createElement("div");
     bubble.className =
-      "max-w-[75%] bg-white/20 backdrop-blur-md text-zinc-900 text-zinc-800 px-4 py-3 rounded-2xl rounded-bl-md space-y-1";
+      "max-w-[75%] bg-white/20 backdrop-blur-md text-zinc-900 px-4 py-3 rounded-2xl rounded-bl-md space-y-1";
 
     wrapper.appendChild(bubble);
     chat.appendChild(wrapper);
@@ -99,7 +102,7 @@
 
     const bubble = document.createElement("div");
     bubble.className =
-      "max-w-[75%] bg-zinc-900 text-white px-4 py-2 rounded-2xl rounded-br-md";
+      "max-w-[75%] bg-zinc-900/80 backdrop-blur-md text-white px-4 py-2 rounded-2xl rounded-br-md";
 
     bubble.innerText = text;
 
@@ -110,94 +113,84 @@
   }
 
   async function send() {
-  const input = document.getElementById("msg");
-  const userText = input.value.trim();
+    const input = document.getElementById("msg");
+    const userText = input.value.trim();
 
-  if (!userText) return;
+    if (!userText) return;
 
-  addUserMessage(userText);
-  input.value = "";
+    addUserMessage(userText);
+    input.value = "";
 
-  const bubble = createBotMessageContainer();
+    const bubble = createBotMessageContainer();
 
-  let isFinal = false;
-  let finalTextNode = null;
+    let isFinal = false;
+    let finalTextNode = null;
 
-  function appendText(node, text) {
-    const trimmed = text.trim();
+    function appendText(node, text) {
+      const trimmed = text.trim();
+      if (!trimmed) return;
 
-    if (!trimmed) return;
+      if (node.textContent.length > 0 && !node.textContent.endsWith(" ")) {
+        node.textContent += " ";
+      }
 
-    // Add space only if needed
-    if (
-      node.textContent.length > 0 &&
-      !node.textContent.endsWith(" ")
-    ) {
-      node.textContent += " ";
+      node.textContent += trimmed;
     }
 
-    node.textContent += trimmed;
-  }
+    try {
+      const res = await fetch(
+        `https://flowtai-1.onrender.com/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=67`
+      );
 
-  try {
-    const res = await fetch(
-      `https://flowtai-1.onrender.com/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=67`
-    );
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n").filter(line => line.trim() !== "");
 
-      const chunk = decoder.decode(value, { stream: true });
+        for (let line of lines) {
+          if (line.startsWith("data:")) {
+            isFinal = true;
+            const clean = line.replace(/^data:\s*/, "");
 
-      const lines = chunk.split("\n").filter(line => line.trim() !== "");
-
-      for (let line of lines) {
-        if (line.startsWith("data:")) {
-          isFinal = true;
-
-          const clean = line.replace(/^data:\s*/, "");
-
-          if (!finalTextNode) {
-            finalTextNode = document.createElement("div");
-            finalTextNode.className = "text-zinc-800";
-            bubble.appendChild(finalTextNode);
-          }
-
-          appendText(finalTextNode, clean);
-
-        } else {
-          if (!isFinal) {
-            // intermediate thoughts
-            const step = document.createElement("div");
-            step.className = "text-zinc-400 text-xs";
-            step.textContent = line;
-            bubble.appendChild(step);
-
-          } else {
-            // final streaming continuation
             if (!finalTextNode) {
               finalTextNode = document.createElement("div");
               finalTextNode.className = "text-zinc-800";
               bubble.appendChild(finalTextNode);
             }
 
-            appendText(finalTextNode, line);
+            appendText(finalTextNode, clean);
+
+          } else {
+            if (!isFinal) {
+              const step = document.createElement("div");
+              step.className = "text-zinc-400 text-xs";
+              step.textContent = line;
+              bubble.appendChild(step);
+
+            } else {
+              if (!finalTextNode) {
+                finalTextNode = document.createElement("div");
+                finalTextNode.className = "text-zinc-800";
+                bubble.appendChild(finalTextNode);
+              }
+
+              appendText(finalTextNode, line);
+            }
           }
         }
+
+        chat.scrollTop = chat.scrollHeight;
       }
 
-      const chat = document.getElementById("chat");
-      chat.scrollTop = chat.scrollHeight;
+    } catch (err) {
+      bubble.innerHTML = `<span class="text-red-500">⚠️ Error streaming response</span>`;
     }
-
-  } catch (err) {
-    bubble.innerHTML = `<span class="text-red-500">⚠️ Error streaming response</span>`;
   }
-}
 </script>
 
 </body>
