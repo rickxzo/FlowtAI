@@ -58,28 +58,31 @@
   const wrapper = document.createElement("div");
 
   function applyResponsiveStyles() {
-    const isMobile = window.innerWidth < 640;
+  const isMobile = window.innerWidth < 640;
 
-    if (isMobile) {
-      // 📱 MOBILE → bottom sheet
-      Object.assign(wrapper.style, {
-        bottom: "0",
-        right: "0",
-        width: "100vw",
-        height: "100dvh",
-        borderRadius: "0px",
-      });
-    } else {
-      // 💻 DESKTOP
-      Object.assign(wrapper.style, {
-        bottom: "90px",
-        right: "20px",
-        width: "380px",
-        height: "560px",
-        borderRadius: "24px",
-      });
-    }
+  if (isMobile) {
+    // 📱 MOBILE → floating card (NOT fullscreen)
+    Object.assign(wrapper.style, {
+      bottom: "80px",          // 👈 leaves space for button
+      right: "12px",
+      left: "12px",            // 👈 centered with margin
+      width: "auto",
+      height: "70vh",          // 👈 not full screen
+      maxHeight: "520px",
+      borderRadius: "20px",
+    });
+  } else {
+    // 💻 DESKTOP
+    Object.assign(wrapper.style, {
+      bottom: "90px",
+      right: "20px",
+      left: "auto",
+      width: "380px",
+      height: "560px",
+      borderRadius: "24px",
+    });
   }
+}
 
   Object.assign(wrapper.style, {
     position: "fixed",
