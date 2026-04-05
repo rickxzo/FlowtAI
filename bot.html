@@ -6,57 +6,48 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    #chat::-webkit-scrollbar { width: 0px; }
-    #chat { -ms-overflow-style: none; scrollbar-width: none; }
-
-    html, body {
-      height: 100%;
-      margin: 0;
+    /* Hide scrollbar */
+    #chat::-webkit-scrollbar {
+      width: 0px;
+    }
+    #chat {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
 
-<body class="bg-transparent flex items-center justify-center h-full m-0">
+<body class="bg-zinc-200 flex items-center justify-center h-screen">
 
-  <!-- 🔥 MAIN GLASS CONTAINER -->
-  <div class="relative w-full max-w-md h-full rounded-3xl overflow-hidden
-    bg-gradient-to-br from-white/10 to-white/5
-    backdrop-blur-xl
-    border border-white/10
-    shadow-[0_25px_60px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.08)]
-    flex flex-col">
-
-    <!-- ✨ subtle noise for realism -->
-    <div class="pointer-events-none absolute inset-0 opacity-[0.03]"
-      style="background-image: url('https://grainy-gradients.vercel.app/noise.svg');">
-    </div>
+  <div class="w-full max-w-md h-[620px] 
+  bg-white/10 backdrop-blur-xl 
+  rounded-3xl border border-white/20 
+  shadow-xl flex flex-col overflow-hidden">
 
     <!-- Header -->
-    <div class="relative px-5 py-4 border-b border-white/10 flex items-center justify-between
-      bg-white/5 backdrop-blur-md">
-      <h2 class="text-lg font-semibold text-white">FlowtAI</h2>
-      <span class="text-xs text-green-400">● Online</span>
+    <div class="px-5 py-4 border-b border-zinc-200 flex items-center justify-between bg-white/10 backdrop-blur-md">
+      <h2 class="text-lg font-semibold text-zinc-800">FlowtAI</h2>
+      <span class="text-xs text-green-500">● Online</span>
     </div>
 
     <!-- Chat -->
-    <div id="chat"
-      class="relative flex-1 overflow-y-auto px-4 py-6 space-y-4 text-sm bg-transparent">
+    <div id="chat" class="flex-1 overflow-y-auto px-4 py-6 space-y-4 text-sm bg-white/5">
 
-      <div id="emptyState"
-        class="h-full flex items-center justify-center text-center text-zinc-400">
+      <!-- Empty state -->
+      <div id="emptyState" class="h-full flex items-center justify-center text-center text-zinc-400">
         <p class="text-lg font-medium">What can I help with?</p>
       </div>
 
     </div>
 
     <!-- Input -->
-    <div class="relative p-3 border-t border-white/10 bg-white/5 backdrop-blur-md">
-      <div class="flex items-center gap-2 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl px-3 py-2">
+    <div class="p-3 border-t border-zinc-200 bg-white/10 backdrop-blur-md">
+      <div class="flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur-md rounded-xl px-3 py-2 border border-zinc-200">
 
         <input
           id="msg"
           placeholder="Ask anything..."
-          class="flex-1 bg-transparent outline-none text-sm text-white placeholder-zinc-400"
+          class="flex-1 bg-transparent outline-none text-sm text-zinc-700 placeholder-zinc-400"
           onkeydown="if(event.key==='Enter') send()"
         />
 
@@ -92,7 +83,7 @@
 
     const bubble = document.createElement("div");
     bubble.className =
-      "max-w-[75%] bg-white/10 text-white px-4 py-3 rounded-2xl rounded-bl-md";
+      "max-w-[75%] bg-white/20 backdrop-blur-md text-zinc-900 text-zinc-800 px-4 py-3 rounded-2xl rounded-bl-md space-y-1";
 
     wrapper.appendChild(bubble);
     chat.appendChild(wrapper);
@@ -119,84 +110,94 @@
   }
 
   async function send() {
-    const input = document.getElementById("msg");
-    const userText = input.value.trim();
+  const input = document.getElementById("msg");
+  const userText = input.value.trim();
 
-    if (!userText) return;
+  if (!userText) return;
 
-    addUserMessage(userText);
-    input.value = "";
+  addUserMessage(userText);
+  input.value = "";
 
-    const bubble = createBotMessageContainer();
+  const bubble = createBotMessageContainer();
 
-    let isFinal = false;
-    let finalTextNode = null;
+  let isFinal = false;
+  let finalTextNode = null;
 
-    function appendText(node, text) {
-      const trimmed = text.trim();
-      if (!trimmed) return;
+  function appendText(node, text) {
+    const trimmed = text.trim();
 
-      if (node.textContent.length > 0 && !node.textContent.endsWith(" ")) {
-        node.textContent += " ";
-      }
+    if (!trimmed) return;
 
-      node.textContent += trimmed;
+    // Add space only if needed
+    if (
+      node.textContent.length > 0 &&
+      !node.textContent.endsWith(" ")
+    ) {
+      node.textContent += " ";
     }
 
-    try {
-      const res = await fetch(
-        `https://flowtai-1.onrender.com/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=67`
-      );
+    node.textContent += trimmed;
+  }
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
+  try {
+    const res = await fetch(
+      `https://flowtai-1.onrender.com/respond?agent_id=${agentId}&input=${encodeURIComponent(userText)}&convo=67`
+    );
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
 
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split("\n").filter(line => line.trim() !== "");
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
 
-        for (let line of lines) {
-          if (line.startsWith("data:")) {
-            isFinal = true;
-            const clean = line.replace(/^data:\s*/, "");
+      const chunk = decoder.decode(value, { stream: true });
 
+      const lines = chunk.split("\n").filter(line => line.trim() !== "");
+
+      for (let line of lines) {
+        if (line.startsWith("data:")) {
+          isFinal = true;
+
+          const clean = line.replace(/^data:\s*/, "");
+
+          if (!finalTextNode) {
+            finalTextNode = document.createElement("div");
+            finalTextNode.className = "text-zinc-800";
+            bubble.appendChild(finalTextNode);
+          }
+
+          appendText(finalTextNode, clean);
+
+        } else {
+          if (!isFinal) {
+            // intermediate thoughts
+            const step = document.createElement("div");
+            step.className = "text-zinc-400 text-xs";
+            step.textContent = line;
+            bubble.appendChild(step);
+
+          } else {
+            // final streaming continuation
             if (!finalTextNode) {
               finalTextNode = document.createElement("div");
-              finalTextNode.className = "text-white";
+              finalTextNode.className = "text-zinc-800";
               bubble.appendChild(finalTextNode);
             }
 
-            appendText(finalTextNode, clean);
-
-          } else {
-            if (!isFinal) {
-              const step = document.createElement("div");
-              step.className = "text-zinc-400 text-xs";
-              step.textContent = line;
-              bubble.appendChild(step);
-
-            } else {
-              if (!finalTextNode) {
-                finalTextNode = document.createElement("div");
-                finalTextNode.className = "text-white";
-                bubble.appendChild(finalTextNode);
-              }
-
-              appendText(finalTextNode, line);
-            }
+            appendText(finalTextNode, line);
           }
         }
-
-        chat.scrollTop = chat.scrollHeight;
       }
 
-    } catch (err) {
-      bubble.innerHTML = `<span class="text-red-500">⚠️ Error streaming response</span>`;
+      const chat = document.getElementById("chat");
+      chat.scrollTop = chat.scrollHeight;
     }
+
+  } catch (err) {
+    bubble.innerHTML = `<span class="text-red-500">⚠️ Error streaming response</span>`;
   }
+}
 </script>
 
 </body>
