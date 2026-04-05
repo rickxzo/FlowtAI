@@ -359,13 +359,34 @@ def respond():
         if conn == 404:
             return "Database connection error", 500
         cursor = conn.cursor()
-        cursor.execute("SELECT A.model, A.namespace, A.prompt, A.active, A.userid, U.username FROM Agents A JOIN users U ON U.id = A.userid WHERE A.id = %s", (agent_id,))
-        result = cursor.fetchone()
-        if not result:
-            cursor.close()
-            conn.close()
-            return "Agent not found", 404
-        model_id, namespace, prompt, active, userid, username = result
+        key = f"agent:{agent_id}"
+        data = redis_client.get(key)
+        if data:
+            agent = json.loads(data)
+            model_id, namespace, prompt, active, userid, username = (
+                agent["model"],
+                agent["namespace"],
+                agent["prompt"],
+                agent["active"],
+                agent["userid"],
+                agent["username"]
+            )
+        else:
+            cursor.execute("SELECT A.model, A.namespace, A.prompt, A.active, A.userid, U.username FROM Agents A JOIN users U ON U.id = A.userid WHERE A.id = %s", (agent_id,))
+            result = cursor.fetchone()
+            if not result:
+                cursor.close()
+                conn.close()
+                return "Agent not found", 404
+            model_id, namespace, prompt, active, userid, username = result
+            redis_client.set(key, json.dumps({
+                "model": model_id,
+                "namespace": namespace,
+                "prompt": prompt,
+                "active": active,
+                "userid": userid,
+                "username": username
+            }), ex=1800)
         if active == False:
             return "Agent is inactive"
         cursor.execute(
