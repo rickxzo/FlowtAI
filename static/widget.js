@@ -2,7 +2,9 @@
   const script = document.currentScript;
   const agentId = script.getAttribute("data-agent-id");
 
+  // =========================
   // BUTTON
+  // =========================
   const button = document.createElement("div");
   button.innerHTML = `
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -37,60 +39,77 @@
 
   document.body.appendChild(button);
 
-  // ✅ CREATE IFRAME FIRST
+  // =========================
+  // IFRAME
+  // =========================
   const iframe = document.createElement("iframe");
   iframe.src = `https://flowtai-1.onrender.com/chat-widget?agent_id=${agentId}`;
 
-  // ✅ APPLY STYLE ONCE
   Object.assign(iframe.style, {
+    width: "100%",
+    height: "100%",
+    border: "none",
+    background: "transparent"
+  });
+
+  // =========================
+  // GLASS WRAPPER (KEY FIX)
+  // =========================
+  const wrapper = document.createElement("div");
+
+  Object.assign(wrapper.style, {
     position: "fixed",
     bottom: "90px",
     right: "20px",
 
+    // 🔥 SAME DIMENSIONS
     width: "380px",
     height: "560px",
 
-    border: "1px solid rgba(255,255,255,0.25)",
     borderRadius: "24px",
+    border: "1px solid rgba(255,255,255,0.25)",
 
-    // glass shell
+    // ✅ REAL GLASS EFFECT
     background: "rgba(255,255,255,0.08)",
     backdropFilter: "blur(16px)",
     WebkitBackdropFilter: "blur(16px)",
 
     boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
 
+    overflow: "hidden",
     display: "none",
     zIndex: "9999",
-    overflow: "hidden",
 
     transform: "translateY(20px) scale(0.98)",
     opacity: "0",
     transition: "all 0.25s ease"
   });
 
-  document.body.appendChild(iframe);
+  wrapper.appendChild(iframe);
+  document.body.appendChild(wrapper);
 
+  // =========================
   // TOGGLE
+  // =========================
   let isOpen = false;
 
   button.onclick = () => {
     isOpen = !isOpen;
 
     if (isOpen) {
-      iframe.style.display = "block";
+      wrapper.style.display = "block";
 
       requestAnimationFrame(() => {
-        iframe.style.transform = "translateY(0) scale(1)";
-        iframe.style.opacity = "1";
+        wrapper.style.transform = "translateY(0) scale(1)";
+        wrapper.style.opacity = "1";
       });
 
     } else {
-      iframe.style.transform = "translateY(20px) scale(0.98)";
-      iframe.style.opacity = "0";
+      wrapper.style.transform = "translateY(20px) scale(0.98)";
+      wrapper.style.opacity = "0";
 
       setTimeout(() => {
-        iframe.style.display = "none";
+        wrapper.style.display = "none";
       }, 200);
     }
   };
