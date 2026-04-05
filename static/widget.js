@@ -11,32 +11,22 @@
     </svg>
   `;
 
-  Object.assign(iframe.style, {
-  position: "fixed",
-  bottom: "90px",
-  right: "20px",
-
-  width: "380px",
-  height: "560px",
-
-  border: "1px solid rgba(255,255,255,0.25)",
-  borderRadius: "24px",
-
-  // glass base (keep subtle)
-  background: "rgba(255,255,255,0.08)",
-  backdropFilter: "blur(16px)",
-  WebkitBackdropFilter: "blur(16px)",
-
-  boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
-
-  display: "none",
-  zIndex: "9999",
-  overflow: "hidden",
-
-  transform: "translateY(20px) scale(0.98)",
-  opacity: "0",
-  transition: "all 0.25s ease"
-});
+  Object.assign(button.style, {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    width: "56px",
+    height: "56px",
+    background: "#18181b",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    zIndex: "9999",
+    boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+    transition: "all 0.2s ease"
+  });
 
   button.onmouseenter = () => {
     button.style.transform = "scale(1.06)";
@@ -47,35 +37,38 @@
 
   document.body.appendChild(button);
 
-  // IFRAME
+  // ✅ CREATE IFRAME FIRST
   const iframe = document.createElement("iframe");
   iframe.src = `https://flowtai-1.onrender.com/chat-widget?agent_id=${agentId}`;
 
+  // ✅ APPLY STYLE ONCE
   Object.assign(iframe.style, {
-  position: "fixed",
-  bottom: "90px",
-  right: "20px",
+    position: "fixed",
+    bottom: "90px",
+    right: "20px",
 
-  width: "380px",
-  height: "560px",
+    width: "380px",
+    height: "560px",
 
-  border: "1px solid rgba(255,255,255,0.2)",
-  borderRadius: "24px",
+    border: "1px solid rgba(255,255,255,0.25)",
+    borderRadius: "24px",
 
-  // ✨ translucent glass
-  background: "rgba(250, 250, 250, 0.6)",
-  backdropFilter: "blur(12px)",
+    // glass shell
+    background: "rgba(255,255,255,0.08)",
+    backdropFilter: "blur(16px)",
+    WebkitBackdropFilter: "blur(16px)",
 
-  boxShadow: "0 25px 60px rgba(0,0,0,0.18)",
+    boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
 
-  display: "none",
-  zIndex: "9999",
-  overflow: "hidden",
+    display: "none",
+    zIndex: "9999",
+    overflow: "hidden",
 
-  transform: "translateY(20px) scale(0.98)",
-  opacity: "0",
-  transition: "all 0.25s ease"
-});
+    transform: "translateY(20px) scale(0.98)",
+    opacity: "0",
+    transition: "all 0.25s ease"
+  });
+
   document.body.appendChild(iframe);
 
   // TOGGLE
