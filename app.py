@@ -418,7 +418,6 @@ def respond():
             convo = []
         convo.append(f"User: {user_input}")
         r.set(convo_id, json.dumps(convo), ex=1800)
-        logger.error(convo)
         conversation = "(Conversation start)\n"
         for i in convo:
             conversation += i + "\n"
@@ -530,7 +529,6 @@ Return ONLY the JSON object.
             "optokens": 0,
             "namespace": namespace
         }
-        logger.error(state)
         def event_stream(user_id, convo_id, user_input):
 
             for event in compiled_graph.stream(state):
