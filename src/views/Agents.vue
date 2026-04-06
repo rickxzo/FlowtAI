@@ -49,7 +49,7 @@ const openDelete = (id) => {
 const confirmDelete = async () => {
   isSubmitting.value = true
 
-  await fetch("https://flowtai-1.onrender.com/delete-agent?id=" + deleteAgentId.value, , {credentials: "include"})
+  await fetch("https://flowtai-1.onrender.com/delete-agent?id=" + deleteAgentId.value , {credentials: "include"})
 
   showDelete.value = false
   await loadAgents()
