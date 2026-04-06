@@ -49,7 +49,7 @@ const openDelete = (id) => {
 const confirmDelete = async () => {
   isSubmitting.value = true
 
-  await fetch("https://flowtai-1.onrender.com/delete-agent?id=" + deleteAgentId.value)
+  await fetch("https://flowtai-1.onrender.com/delete-agent?id=" + deleteAgentId.value, , {credentials: "include"})
 
   showDelete.value = false
   await loadAgents()
@@ -81,7 +81,8 @@ const uploadKB = async () => {
 
     const res = await fetch("https://flowtai-1.onrender.com/agent-kb?agent_id=" + uploadAgentId.value, {
       method: "POST",
-      body: formData
+      body: formData,
+      credentials: "include"
     })
 
     if (res.status === 200) {
@@ -101,7 +102,7 @@ const uploadKB = async () => {
 
 const copyId = async (id) => {
   try {
-    await navigator.clipboard.writeText("https://flowtai-1.onrender.com/respond?agent_id="+id+"&input=")
+    await navigator.clipboard.writeText("https://flowtai-1.onrender.com/respond?agent_id="+id+"&input=", {credentials: "include"})
     alert("Agent ID copied!")
   } catch (e) {
     console.log("Copy failed", e)
