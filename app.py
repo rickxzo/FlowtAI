@@ -90,7 +90,7 @@ def post_process(user_id, agent_id, convo_id, reply, ipt, opt, user_input, input
     conn.close()
     messages = json.loads(r.get(convo_id))
     messages.append(f"You: {reply}")
-    r.set(convo_id, messages, ex=1800)
+    r.set(convo_id, json.dumps(messages), ex=1800)
 
 
 from pinecone import Pinecone
