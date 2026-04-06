@@ -355,23 +355,27 @@ def respond():
         user_input = request.args.get('input')
         convo_id = request.args.get('convo')
         convo_id = f"{agent_id}-{convo_id}"
-        conn = connect_db()
-        if conn == 404:
-            return "Database connection error", 500
-        cursor = conn.cursor()
         key = f"agent:{agent_id}"
         data = r.get(key)
         if data:
             agent = json.loads(data)
-            model_id, namespace, prompt, active, userid, username = (
+            model_id, namespace, prompt, active, userid, username, balance, input_cost, output_cost, model_name = (
                 agent["model"],
                 agent["namespace"],
                 agent["prompt"],
                 agent["active"],
                 agent["userid"],
-                agent["username"]
+                agent["username"],
+                agent["balance"],
+                agent["input"],
+                agent["output"],
+                agent["model_name"]
             )
         else:
+            conn = connect_db()
+            if conn == 404:
+                return "Database connection error", 500
+            cursor = conn.cursor()
             cursor.execute("SELECT A.model, A.namespace, A.prompt, A.active, A.userid, U.username FROM Agents A JOIN users U ON U.id = A.userid WHERE A.id = %s", (agent_id,))
             result = cursor.fetchone()
             if not result:
@@ -379,35 +383,51 @@ def respond():
                 conn.close()
                 return "Agent not found", 404
             model_id, namespace, prompt, active, userid, username = result
+            cursor.execute(
+                "SELECT balance FROM users WHERE id = %s", (userid,)
+            )
+            balance = cursor.fetchone()[0]
+            cursor.execute("SELECT name, input, output FROM models WHERE id = %s", (model_id,))
+            res = cursor.fetchone()
+            conn.close()
+            model_name = res[0]
+            input_cost = float(res[1])
+            output_cost = float(res[2])
             r.set(key, json.dumps({
                 "model": model_id,
                 "namespace": namespace,
                 "prompt": prompt,
                 "active": active,
                 "userid": userid,
-                "username": username
+                "username": username,
+                "balance": balance,
+                "input": input_cost,
+                "output": output_cost,
+                "model_name": model_name
             }), ex=1800)
-        cursor.execute(
-            "SELECT balance FROM users WHERE id = %s", (userid,)
-        )
-        balance = cursor.fetchone()[0]
         if balance < 0.05:
             return "Low balance"
-        cursor.execute("SELECT name, input, output FROM models WHERE id = %s", (model_id,))
-        res = cursor.fetchone()
-        model_name = res[0]
-        input_cost = float(res[1])
-        output_cost = float(res[2])
-        cursor.execute("SELECT message FROM messages WHERE convo_id = %s ORDER BY id DESC LIMIT 10", (convo_id,));
-        convo = cursor.fetchall()
-        cursor.close()
-        conn.close()
-        convo.reverse()
+
+        messages = r.get(convo_id)
+        if messages:
+            convo = json.loads(messages)
+        else:
+            conn = connect_db()
+            if conn == 404:
+                return "Database connection error", 500
+            cursor = conn.cursor()
+            cursor.execute("SELECT message FROM messages WHERE convo_id = %s ORDER BY id DESC LIMIT 10", (convo_id,))
+            convo = cursor.fetchall()
+            convo.reverse()
+            convo = [msg[0] for msg in convo]
+            r.set(convo_id, json.dumps(convo), ex=1800)
+            conn.close()
         logger.error(convo)
         conversation = "(Conversation start)\n"
         for i in convo:
-            conversation += i[0] + "\n"
+            conversation += i + "\n"
         conversation += f"User: {user_input}\nYou: "
+        
         default_prompt = '''
         You are an intelligent assistant representing a company or service. Your primary responsibility is to answer user queries accurately using verified knowledge sources.
 
