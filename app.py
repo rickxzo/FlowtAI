@@ -671,7 +671,7 @@ def logged_in():
 @app.route('/balance', methods=['POST', 'GET'])
 def balance():
     try:
-        if 'userid' not in session or not session.get('verified', False):
+        if 'userid' not in session:
             return "Unauthorized", 401
         conn = connect_db()
         cursor = conn.cursor()
@@ -686,7 +686,7 @@ def balance():
 @app.route('/agents', methods=['POST', 'GET'])
 def agents():
     try:
-        if 'userid' not in session or not session.get('verified', False):
+        if 'userid' not in session:
             return "Unauthorized", 401
         agents=r.get(f"{session["username"]}_agents")
         if agents is not None:
@@ -753,13 +753,13 @@ def create_agent():
         r.delete(f"{session["username"]}_agents")
         return "Agent created successfully", 200
     except Exception as e:
-        #print(f"Error creating agent: {e}")
+        logger.error(f"Error creating agent: {e}")
         return f"Error creating agent: {e}", 500
 
 @app.route('/edit-agent', methods=['POST', 'GET'])    
 def edit_agent():
     try:
-        if 'userid' not in session or not session.get('verified', False):
+        if 'userid' not in session:
             return "Unauthorized", 401
         agent_id = request.args.get('id')
         new_prompt = request.args.get('prompt')
@@ -782,14 +782,14 @@ def edit_agent():
         r.delete(f"{session["username"]}_agents")
         return "Agent updated successfully", 200
     except Exception as e:
-        #print(f"Error editing agent: {e}")
+        logger.error(f"Error editing agent: {e}")
         return f"Error editing agent: {e}", 500
     
 @app.route('/agent-kb', methods=['POST', 'GET'])      # OPTIMIZE (INDEX -> NAMESPACE)
 def agent_kb():
     try:
-        #if 'userid' not in session or not session.get('verified', False):
-            #return "Unauthorized", 401
+        if 'userid' not in session:
+            return "Unauthorized", 401
         agent_id = request.args.get('agent_id')
         file = request.files['file']
         if not file:
@@ -838,13 +838,13 @@ def agent_kb():
         )
         return {"knowledge_base": f"Knowledge base for agent with Pinecone index {namespace}"}, 200
     except Exception as e:
-        #print(f"Error fetching agent knowledge base: {e}")
+        logger.error(f"Error fetching agent knowledge base: {e}")
         return f"Error fetching agent knowledge base: {e}", 500
 
 @app.route('/delete-agent', methods=['POST', 'GET'])   
 def delete_agent():
     try:
-        if 'userid' not in session or not session.get('verified', False):
+        if 'userid' not in session:
             return "Unauthorized", 401
         agent_id = request.args.get('id')
         conn = connect_db()
@@ -882,6 +882,7 @@ def add_credit():
         )
         return "Credit added"
     except Exception as e:
+        logger.error(f"Error adding credit: {e}")
         return f"Error adding credit: {e}", 500
 
 # ADMIN SECTION
@@ -896,7 +897,7 @@ def admin_login():
         else:
             return "Invalid admin password", 400
     except Exception as e:
-        #print(f"Error during admin login: {e}")
+        logger.error(f"Error during admin login: {e}")
         return f"Error during admin login: {e}", 500
 
 @app.route('/admin-logout', methods=['POST', 'GET'])
@@ -908,10 +909,8 @@ def admin_logout():
 def show_models():
     try:
         models = r.get("models")
-        logger.error(models)
         if models is not None:
             models = json.loads(models)
-            logger.error(models)
             return {"models": [{"id": m[0], 
                             "name": m[1], 
                             "description": m[2], 
@@ -966,7 +965,7 @@ def add_model():
         r.delete('models')
         return "Model added successfully", 200
     except Exception as e:
-        #print(f"Error adding model: {e}")
+        logger.error(f"Error adding model: {e}")
         return f"Error adding model: {e}", 500
 
 @app.route('/delete-model', methods=['POST', 'GET'])
@@ -1006,7 +1005,7 @@ def delete_model():
         r.delete("models")
         return "Model deleted successfully", 200
     except Exception as e:
-        #print(f"Error deleting model: {e}")
+        logger.error(f"Error deleting model: {e}")
         return f"Error deleting model: {e}", 500
 
 if __name__ == '__main__':
