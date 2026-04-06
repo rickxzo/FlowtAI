@@ -155,7 +155,8 @@ const saveEdit = async () => {
     const res = await fetch(
       "https://flowtai-1.onrender.com/edit-agent?id=" + editingAgent.value.id +
       "&model=" + encodeURIComponent(editModel.value) +
-      "&prompt=" + encodeURIComponent(editPrompt.value)
+      "&prompt=" + encodeURIComponent(editPrompt.value),
+      {credentials: "include"}
     )
 
     if (res.status === 200) {
