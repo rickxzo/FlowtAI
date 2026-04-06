@@ -88,6 +88,9 @@ def post_process(user_id, agent_id, convo_id, reply, ipt, opt, user_input, input
     conn.commit()
     cursor.close()
     conn.close()
+    messages = json.loads(r.get(convo_id))
+    messages.append(f"You: {reply}")
+    r.set(convo_id, messages, ex=1800)
 
 
 from pinecone import Pinecone
@@ -412,22 +415,15 @@ def respond():
         if messages:
             convo = json.loads(messages)
         else:
-            conn = connect_db()
-            if conn == 404:
-                return "Database connection error", 500
-            cursor = conn.cursor()
-            cursor.execute("SELECT message FROM messages WHERE convo_id = %s ORDER BY id DESC LIMIT 10", (convo_id,))
-            convo = cursor.fetchall()
-            convo.reverse()
-            convo = [msg[0] for msg in convo]
-            r.set(convo_id, json.dumps(convo), ex=1800)
-            conn.close()
+            convo = []
+        convo.append(f"User: {user_input}")
+        r.set(convo_id, json.dumps(convo), ex=1800)
         logger.error(convo)
         conversation = "(Conversation start)\n"
         for i in convo:
             conversation += i + "\n"
-        conversation += f"User: {user_input}\nYou: "
-        
+        conversation += "You: "
+        logger.error(conversation)
         default_prompt = '''
         You are an intelligent assistant representing a company or service. Your primary responsibility is to answer user queries accurately using verified knowledge sources.
 
