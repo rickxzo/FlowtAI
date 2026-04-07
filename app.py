@@ -86,8 +86,14 @@ def post_process(user_id, agent_id, convo_id, reply, ipt, opt, user_input, input
         ''', (convo_id, f"You: {reply}")
     )
     conn.commit()
+    cursor.execute("SELECT balance FROM users WHERE id = %s", (user_id,))
+    balance = float(cursor.fetchone()[0])
     cursor.close()
     conn.close()
+    key = f"agent:{agent_id}"
+    data = json.loads(r.get(key))
+    data["balance"] = balance
+    r.set(key, json.dumps(data))
     messages = json.loads(r.get(convo_id))
     messages.append(f"You: {reply}")
     messages = messages[-15:]
