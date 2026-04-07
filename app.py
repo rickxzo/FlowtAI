@@ -415,8 +415,17 @@ def respond():
                 "output": output_cost,
                 "model_name": model_name
             }), ex=1800)
+        if not active:
+            return "Agent is currently inactive"
         if balance < 0.05:
-            return "Low balance"
+            conn = connect_db()
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET active = false WHERE id = %s", (agent_id,));
+            conn.commit()
+            cursor.execute("SELECT U.email FROM users U JOIN agents A ON A.userid = U.id WHERE A.id = %s", (agent_id))
+            email = cursor.fetchone()[0]
+            send_mail(email, "Your agents have been currently deactivated due to your balance dropping lower than the minimum balance. Please recharge.", "Agent deactivation notice.")
+            return "Agent is currently inactive"
 
         messages = r.get(convo_id)
         if messages:
