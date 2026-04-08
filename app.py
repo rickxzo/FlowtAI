@@ -330,7 +330,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 def keepalive():
     URLS = [
     "https://flowtai.onrender.com",
-    "https://flowtai-1.onrender.com"
+    "https://flowtai-1.onrender.com",
+    "http://localhost:5173"
     ]
     for url in URLS:
         try:
