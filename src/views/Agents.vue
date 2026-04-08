@@ -32,6 +32,9 @@ const error = ref(null)
 const isLoadingAgents = ref(true)
 const isUnauthorized = ref(false)
 
+const editBackupModel = ref("")
+const editMemory = ref("temporary")
+
 // COMPUTED
 const filteredAgents = computed(() => {
   return agents.value.filter(a =>
@@ -115,6 +118,8 @@ const editAgent = (agent) => {
   editingAgent.value = agent
   editModel.value = agent.model_id || ""
   editPrompt.value = agent.prompt || ""
+  editBackupModel.value = agent.backup_model || ""
+  editMemory.value = agent.memory || "temporary"
 
   showEdit.value = true
   isSubmitting.value = false
@@ -393,42 +398,138 @@ onMounted(() => {
   </div>
 
   <!-- EDIT MODAL -->
-  <div v-if="showEdit"
-    class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-    <div class="bg-zinc-900 rounded-xl p-8 w-full max-w-md space-y-6">
+  <!-- EDIT MODAL -->
+<div v-if="showEdit"
+  class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
 
+  <div class="bg-zinc-900 rounded-2xl p-8 w-full max-w-2xl space-y-8 border border-zinc-800">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center">
       <h2 class="text-xl font-semibold">Edit Agent</h2>
+      <button @click="showEdit=false" class="text-zinc-400 hover:text-white">✕</button>
+    </div>
 
-      <div v-if="error" class="text-red-400 text-sm">
-        {{ error }}
+    <!-- ERROR -->
+    <div v-if="error" class="text-red-400 text-sm">
+      {{ error }}
+    </div>
+
+    <!-- GRID -->
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- PRIMARY MODEL -->
+      <div>
+        <label class="text-sm text-zinc-400">Primary Model</label>
+        <select v-model="editModel"
+          class="w-full mt-1 bg-zinc-800 px-4 py-2 rounded-lg">
+          <option v-for="model in models"
+            :key="model.id"
+            :value="model.id">
+            {{ model.name }}
+          </option>
+        </select>
       </div>
 
-      <select v-model="editModel"
-        class="w-full bg-zinc-800 px-4 py-2 rounded-lg">
-        <option v-for="model in models"
-          :key="model.id"
-          :value="model.id">
-          {{ model.name }}
-        </option>
-      </select>
+      <!-- BACKUP MODEL -->
+      <div>
+        <label class="text-sm text-zinc-400">Backup Model</label>
+        <select v-model="editBackupModel"
+          class="w-full mt-1 bg-zinc-800 px-4 py-2 rounded-lg">
+          <option disabled value="">Select backup model</option>
+          <option v-for="model in models"
+            :key="model.id"
+            :value="model.id">
+            {{ model.name }}
+          </option>
+        </select>
+        <p class="text-xs text-zinc-500 mt-1">
+          Used when main model is unavailable.
+        </p>
+      </div>
 
+    </div>
+
+    <!-- MEMORY -->
+    <div>
+      <label class="text-sm text-zinc-400">Memory</label>
+
+      <div class="flex gap-6 mt-2">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="radio" value="persistent" v-model="editMemory" />
+          <span>Persistent</span>
+        </label>
+
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="radio" value="temporary" v-model="editMemory" />
+          <span>Temporary</span>
+        </label>
+      </div>
+
+      <p class="text-xs text-zinc-500 mt-1">
+        Persistent stores conversations. Temporary does not store messages.
+      </p>
+    </div>
+
+    <!-- PROMPT -->
+    <div>
+      <label class="text-sm text-zinc-400">System Prompt</label>
       <textarea v-model="editPrompt"
-        class="w-full bg-zinc-800 px-4 py-2 rounded-lg h-32"></textarea>
+        class="w-full mt-1 bg-zinc-800 px-4 py-2 rounded-lg h-32"></textarea>
+    </div>
 
-      <div class="flex justify-end gap-4">
-        <button @click="showEdit=false"
-          class="px-4 py-2 bg-zinc-700 rounded-lg">
-          Cancel
-        </button>
+    <!-- API ENDPOINT -->
+    <div>
+      <label class="text-sm text-zinc-400">API Endpoint</label>
 
-        <button @click="saveEdit"
-          :disabled="isSubmitting || !editPrompt.trim()"
-          class="px-4 py-2 bg-blue-600 rounded-lg">
-          {{ isSubmitting ? "Saving..." : "Save Changes" }}
+      <div class="flex mt-1">
+        <input
+          :value="`https://flowtai-1.onrender.com/respond?agent_id=${editingAgent.id}&input=`"
+          readonly
+          class="flex-1 bg-zinc-800 px-4 py-2 rounded-l-lg text-sm"
+        />
+        <button
+          @click="copyId(`https://flowtai-1.onrender.com/respond?agent_id=${editingAgent.id}&input=`)"
+          class="bg-blue-600 px-4 rounded-r-lg">
+          Copy
         </button>
       </div>
     </div>
+
+    <!-- EMBED CODE -->
+    <div>
+      <label class="text-sm text-zinc-400">HTML Embed Code</label>
+
+      <div class="flex mt-1">
+        <input
+          :value="`<script src='https://flowtai-1.onrender.com/static/widget.js' data-agent-id=${editingAgent.id}></script>`"
+          readonly
+          class="flex-1 bg-zinc-800 px-4 py-2 rounded-l-lg text-sm"
+        />
+        <button
+          @click="copyId(`<script src='https://flowtai-1.onrender.com/static/widget.js' data-agent-id=${editingAgent.id}></script>`)"
+          class="bg-green-600 px-4 rounded-r-lg">
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="flex justify-end gap-4 pt-2">
+      <button @click="showEdit=false"
+        class="px-4 py-2 bg-zinc-700 rounded-lg">
+        Cancel
+      </button>
+
+      <button @click="saveEdit"
+        :disabled="isSubmitting || !editPrompt.trim()"
+        class="px-4 py-2 bg-blue-600 rounded-lg">
+        {{ isSubmitting ? "Saving..." : "Save Changes" }}
+      </button>
+    </div>
+
   </div>
+</div>
 
 </div>
 </template>
