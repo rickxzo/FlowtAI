@@ -374,9 +374,10 @@ onMounted(() => {
         placeholder="Provide context"
         class="w-full bg-zinc-800 px-4 py-2 rounded-lg h-28"></textarea>
 
+      
       <select v-model="newModel"
         class="w-full bg-zinc-800 px-4 py-2 rounded-lg">
-        <option disabled value="">Select model</option>
+        <option disabled value="">Select primary model</option>
 
         <option v-for="model in models"
           :key="model.id"
@@ -387,7 +388,7 @@ onMounted(() => {
 
       <!-- BACKUP MODEL -->
         <div>
-          <label class="text-sm text-zinc-400">Backup Model</label>
+          <label class="text-sm text-zinc-400">Backup Model is used upon unavailability of primary model.</label>
           <select v-model="newBackupModel"
             class="w-full mt-1 bg-zinc-800 px-4 py-2 rounded-lg">
             <option disabled value="">Select backup model</option>
@@ -413,6 +414,7 @@ onMounted(() => {
               <input type="radio" value="temporary" v-model="newMemory" />
               <span>Temporary</span>
             </label>
+            <label class="text-sm text-zinc-400">Persistent memory stores all conversations made by your agent.<br> Temporary memory functions no different while interaction, but chats are not stored long term and cannot be viewed.</label>
           </div>
         </div>
 
