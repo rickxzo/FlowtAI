@@ -134,8 +134,11 @@ const createAgent = async () => {
 
   try {
     const res = await fetch(
-      "https://flowtai-1.onrender.com/create-agent?name=" + encodeURIComponent(newName.value) +
+      "https://flowtai-1.onrender.com/create-agent?" +
+      "name=" + encodeURIComponent(newName.value) +
       "&model=" + encodeURIComponent(newModel.value) +
+      "&backup_model=" + encodeURIComponent(newBackupModel.value) +
+      "&memory=" + encodeURIComponent(newMemory.value) +
       "&prompt=" + encodeURIComponent(prompt.value),
       {
         credentials: "include"
@@ -155,16 +158,20 @@ const createAgent = async () => {
   isSubmitting.value = false
 }
 
+
 const saveEdit = async () => {
   error.value = null
   isSubmitting.value = true
 
   try {
     const res = await fetch(
-      "https://flowtai-1.onrender.com/edit-agent?id=" + editingAgent.value.id +
+      "https://flowtai-1.onrender.com/edit-agent?" +
+      "id=" + editingAgent.value.id +
       "&model=" + encodeURIComponent(editModel.value) +
+      "&backup_model=" + encodeURIComponent(editBackupModel.value) +
+      "&memory=" + encodeURIComponent(editMemory.value) +
       "&prompt=" + encodeURIComponent(editPrompt.value),
-      {credentials: "include"}
+      { credentials: "include" }
     )
 
     if (res.status === 200) {
@@ -404,7 +411,7 @@ onMounted(() => {
         <div>
           <label class="text-sm text-zinc-400">Memory</label>
         
-          <div class="flex gap-6 mt-2">
+          <div class="flex justify-center gap-6 mt-2">
             <label class="flex items-center gap-2">
               <input type="radio" value="persistent" v-model="newMemory" />
               <span>Persistent</span>
