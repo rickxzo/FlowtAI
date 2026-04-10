@@ -35,6 +35,9 @@ const isUnauthorized = ref(false)
 const editBackupModel = ref("")
 const editMemory = ref("temporary")
 
+const newBackupModel = ref("")
+const newMemory = ref("temporary")
+
 // COMPUTED
 const filteredAgents = computed(() => {
   return agents.value.filter(a =>
@@ -355,7 +358,7 @@ onMounted(() => {
   <!-- CREATE MODAL -->
   <div v-if="showCreate"
     class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-    <div class="bg-zinc-900 rounded-xl p-8 w-full max-w-md space-y-6">
+    <div class="bg-zinc-900 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 border border-zinc-800">
 
       <h2 class="text-xl font-semibold">Agent info</h2>
 
@@ -382,6 +385,37 @@ onMounted(() => {
         </option>
       </select>
 
+      <!-- BACKUP MODEL -->
+        <div>
+          <label class="text-sm text-zinc-400">Backup Model</label>
+          <select v-model="newBackupModel"
+            class="w-full mt-1 bg-zinc-800 px-4 py-2 rounded-lg">
+            <option disabled value="">Select backup model</option>
+            <option v-for="model in models"
+              :key="model.id"
+              :value="model.id">
+              {{ model.name }}
+            </option>
+          </select>
+        </div>
+        
+        <!-- MEMORY -->
+        <div>
+          <label class="text-sm text-zinc-400">Memory</label>
+        
+          <div class="flex gap-6 mt-2">
+            <label class="flex items-center gap-2">
+              <input type="radio" value="persistent" v-model="newMemory" />
+              <span>Persistent</span>
+            </label>
+        
+            <label class="flex items-center gap-2">
+              <input type="radio" value="temporary" v-model="newMemory" />
+              <span>Temporary</span>
+            </label>
+          </div>
+        </div>
+
       <div class="flex justify-end gap-4">
         <button @click="showCreate=false"
           class="px-4 py-2 bg-zinc-700 rounded-lg">
@@ -402,7 +436,7 @@ onMounted(() => {
 <div v-if="showEdit"
   class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
 
-  <div class="bg-zinc-900 rounded-2xl p-8 w-full max-w-2xl space-y-8 border border-zinc-800">
+  <div class="bg-zinc-900 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 border border-zinc-800">
 
     <!-- HEADER -->
     <div class="flex justify-between items-center">
