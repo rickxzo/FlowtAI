@@ -311,7 +311,7 @@ from flask import Flask, Response, jsonify, request, session, render_template, r
 app = Flask(__name__, template_folder='.', static_folder='static')
 CORS(app,
      supports_credentials=True,
-     origins=["https://flowtai.onrender.com"])
+     origins=["https://flowtai.onrender.com", "http://localhost:5173"])
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 app.secret_key = os.getenv('SECRET_KEY')
@@ -331,7 +331,6 @@ def keepalive():
     URLS = [
     "https://flowtai.onrender.com",
     "https://flowtai-1.onrender.com",
-    "http://localhost:5173"
     ]
     for url in URLS:
         try:
