@@ -414,10 +414,11 @@ onMounted(() => {
               <input type="radio" value="temporary" v-model="newMemory" />
               <span>Temporary</span>
             </label>
-            <p class="text-sm text-zinc-400">Persistent memory stores all conversations made by your agent.<br>
-              Temporary memory functions no different while interaction, but chats are not stored long term and cannot be viewed.
-            </p>
           </div>
+          <p class="text-sm text-zinc-400 mt-2 leading-relaxed">
+            Persistent memory stores all conversations made by your agent.<br>
+            Temporary memory functions no different while interaction, but chats are not stored long term and cannot be viewed.
+          </p>
         </div>
 
       <div class="flex justify-end gap-4">
