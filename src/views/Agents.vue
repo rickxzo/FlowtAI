@@ -539,7 +539,7 @@ onMounted(() => {
         />
         <button
           @click="copyId(`https://flowtai-1.onrender.com/respond?agent_id=${editingAgent.id}&input=`)"
-          class="bg-blue-600 px-4 rounded-r-lg">
+          class="bg-blue-50 text-black px-4 rounded-r-lg">
           Copy
         </button>
       </div>
@@ -557,7 +557,7 @@ onMounted(() => {
         />
         <button
           @click="copyId(`<script src='https://flowtai-1.onrender.com/static/widget.js' data-agent-id=${editingAgent.id}></script>`)"
-          class="bg-green-600 px-4 rounded-r-lg">
+          class="bg-blue-50 text-black px-4 rounded-r-lg">
           Copy
         </button>
       </div>
