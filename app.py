@@ -715,7 +715,7 @@ def agents():
         agents=r.get(f"{session["username"]}_agents")
         if agents is not None:
             agents = json.loads(agents)
-            return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8], 'backup_model_id': a[9], 'backup_model': a[10], 'memory': 'permanent' if a[11] else 'temporary'} for a in agents]}, 200
+            return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8], 'backup_model_id': a[9], 'backup_model': a[10], 'memory': 'persistent' if a[11] else 'temporary'} for a in agents]}, 200
         conn = connect_db()
         if conn == 404:
             return "Database connection error", 500
@@ -746,7 +746,7 @@ def agents():
         cursor.close()
         conn.close()
         r.set(f"{session["username"]}_agents", json.dumps(agents), ex=300)
-        return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8], 'backup_model_id': a[9], 'backup_model': a[10], 'memory': 'permanent' if a[11] else 'temporary'} for a in agents]}, 200
+        return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8], 'backup_model_id': a[9], 'backup_model': a[10], 'memory': 'persistent' if a[11] else 'temporary'} for a in agents]}, 200
     except Exception as e:
         logger.error(f"Error fetching agents: {e}")
         return f"Error fetching agents: {e}", 500
