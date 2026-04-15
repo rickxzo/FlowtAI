@@ -51,7 +51,7 @@ const filteredAgents = computed(() => {
 // METHODS
 
 const openDelete = (id) => {
-  showUpload.value = false
+  showEdit.value = false
   deleteAgentId.value = id
   showDelete.value = true
 }
