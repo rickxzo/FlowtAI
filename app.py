@@ -815,8 +815,8 @@ def edit_agent():
             cursor.close()
             conn.close()
             return "Agent not found", 404
-        cursor.execute("UPDATE Agents SET prompt = %s, model = %s, memory = %s, backup_model = %s WHERE id = %s AND userid = %s", 
-                       (new_prompt, new_model, agent_id, session['userid'], True if memory=='persistent' else False, backup))
+        cursor.execute("UPDATE Agents SET prompt = %s, model = %s, memory = %s, backup_model = %s WHERE id = %s", 
+                       (new_prompt, new_model, True if memory=='persistent' else False, backup, agent_id))
         conn.commit()
         cursor.close()
         conn.close()
