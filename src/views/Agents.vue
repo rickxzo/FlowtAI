@@ -439,7 +439,7 @@ onMounted(() => {
 
         <button @click="createAgent"
           :disabled="isSubmitting || !prompt.trim() || !newName.trim() || !newModel"
-          class="px-4 py-2 bg-blue-600 rounded-lg">
+          class="px-4 py-2 bg-blue-50 text-black rounded-lg">
           {{ isSubmitting ? "Processing..." : "Confirm" }}
         </button>
       </div>
