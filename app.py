@@ -732,8 +732,8 @@ def agents():
                 A.spend, 
                 A.iptokens, 
                 A.optokens, 
-                A.backup_model_id, 
-                BM.name AS backup_model,
+                A.backup_model, 
+                BM.name AS backup_model_name,
                 A.memory
             FROM Agents A
             LEFT JOIN Models M ON A.model = M.id
