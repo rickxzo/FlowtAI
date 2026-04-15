@@ -746,6 +746,8 @@ def create_agent():
         name = request.args.get('name').lower()
         model = request.args.get('model')
         prompt = request.args.get('prompt')
+        memory = request.args.get('memory')
+        backup = request.args.get('backup_model')
         conn = connect_db()
         if conn == 404:
             return "Database connection error", 500
@@ -758,8 +760,8 @@ def create_agent():
         if conn == 404:
             return "Database connection error", 500
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO Agents (userid, name, model, namespace, prompt, active) VALUES (%s, %s, %s, %s, %s, TRUE)", 
-                       (session['userid'], name, model, name, prompt))
+        cursor.execute("INSERT INTO Agents (userid, name, model, namespace, prompt, active, backup_model, memory) VALUES (%s, %s, %s, %s, %s, TRUE, %s, %s)", 
+                       (session['userid'], name, model, name, prompt, backup, memory))
         conn.commit()
         cursor.close()
         conn.close()
@@ -788,6 +790,8 @@ def edit_agent():
         agent_id = request.args.get('id')
         new_prompt = request.args.get('prompt')
         new_model = request.args.get('model')
+        memory = request.args.get('memory')
+        backup = request.args.get('backup_model')
         conn = connect_db()
         if conn == 404:
             return "Database connection error", 500
@@ -798,8 +802,8 @@ def edit_agent():
             cursor.close()
             conn.close()
             return "Agent not found", 404
-        cursor.execute("UPDATE Agents SET prompt = %s, model = %s WHERE id = %s AND userid = %s", 
-                       (new_prompt, new_model, agent_id, session['userid']))
+        cursor.execute("UPDATE Agents SET prompt = %s, model = %s, memory = %s, backup_model = %s WHERE id = %s AND userid = %s", 
+                       (new_prompt, new_model, agent_id, session['userid'], memory, backup))
         conn.commit()
         cursor.close()
         conn.close()
