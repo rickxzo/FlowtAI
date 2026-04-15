@@ -20,7 +20,7 @@ def connect_db():
             host="ep-blue-surf-adwk6v0m-pooler.c-2.us-east-1.aws.neon.tech",
             dbname="neondb",
             user="neondb_owner",
-            password="npg_GVplZkyajw67",
+            password=os.getenv('NEON_PASS'),
             sslmode="require",
              
         )
@@ -1065,5 +1065,4 @@ def delete_model():
         return f"Error deleting model: {e}", 500
 
 if __name__ == '__main__':
-    
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')
