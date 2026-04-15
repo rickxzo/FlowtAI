@@ -761,7 +761,7 @@ def create_agent():
             return "Database connection error", 500
         cursor = conn.cursor()
         cursor.execute("INSERT INTO Agents (userid, name, model, namespace, prompt, active, backup_model, memory) VALUES (%s, %s, %s, %s, %s, TRUE, %s, %s)", 
-                       (session['userid'], name, model, name, prompt, backup, memory))
+                       (session['userid'], name, model, name, prompt, backup, True if memory=='persistent' else False))
         conn.commit()
         cursor.close()
         conn.close()
@@ -803,7 +803,7 @@ def edit_agent():
             conn.close()
             return "Agent not found", 404
         cursor.execute("UPDATE Agents SET prompt = %s, model = %s, memory = %s, backup_model = %s WHERE id = %s AND userid = %s", 
-                       (new_prompt, new_model, agent_id, session['userid'], memory, backup))
+                       (new_prompt, new_model, agent_id, session['userid'], True if memory=='persistent' else False, backup))
         conn.commit()
         cursor.close()
         conn.close()
