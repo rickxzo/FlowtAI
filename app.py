@@ -1052,6 +1052,7 @@ def delete_model():
             ''',
             (result[0], result[0], result[0], result[0], model_id)
         )
+        cursor.execute("UPDATE agents SET backup_model = %s WHERE backup_model = %s AND backup_model != %s", (result[0], model_id, result[0]))
         cursor.execute("DELETE FROM models WHERE id = %s", (model_id,))
         conn.commit()
         cursor.close()
