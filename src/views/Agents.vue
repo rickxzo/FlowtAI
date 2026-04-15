@@ -1,5 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 // STATE
 const agents = ref([])
@@ -146,7 +149,7 @@ const createAgent = async () => {
     )
 
     if (res.status === 200) {
-      window.location = "/"
+      router.push("/agents")
     } else {
       error.value = await res.text()
     }
