@@ -569,7 +569,7 @@ onMounted(() => {
       <!-- DELETE BUTTON -->
       <button
         @click="openDelete(editingAgent.id)"
-        class="px-4 py-2 bg-red-400 rounded-lg text-white">
+        class="px-4 py-2 bg-red-600 rounded-lg text-white">
         Delete Agent
       </button>
     
@@ -582,7 +582,7 @@ onMounted(() => {
     
         <button @click="saveEdit"
           :disabled="isSubmitting || !editPrompt.trim()"
-          class="px-4 py-2 bg-blue-50 rounded-lg">
+          class="px-4 py-2 bg-blue-50 rounded-lg text-black">
           {{ isSubmitting ? "Saving..." : "Save Changes" }}
         </button>
       </div>
