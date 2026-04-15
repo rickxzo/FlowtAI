@@ -124,7 +124,7 @@ const editAgent = (agent) => {
   editingAgent.value = agent
   editModel.value = agent.model_id || ""
   editPrompt.value = agent.prompt || ""
-  editBackupModel.value = agent.backup_model || ""
+  editBackupModel.value = agent.backup_model_id || ""
   editMemory.value = agent.memory || "temporary"
 
   showEdit.value = true
