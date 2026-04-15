@@ -297,9 +297,7 @@ onMounted(() => {
         </div>
 
         <div class="flex justify-between pt-2">
-          <button @click="copyId(agent.id)" class="text-white text-sm">Copy ID</button>
           <button @click="editAgent(agent)" class="text-white text-sm">Edit</button>
-          <button @click="openDelete(agent.id)" class="text-red-400 text-sm">Delete</button>
           <button @click="openUpload(agent.id)" class="text-white text-sm">Upload</button>
         </div>
 
@@ -564,17 +562,29 @@ onMounted(() => {
     </div>
 
     <!-- ACTIONS -->
-    <div class="flex justify-end gap-4 pt-2">
-      <button @click="showEdit=false"
-        class="px-4 py-2 bg-zinc-700 rounded-lg">
-        Cancel
+    <div class="flex justify-between items-center pt-2">
+    
+      <!-- DELETE BUTTON -->
+      <button
+        @click="openDelete(editingAgent.id)"
+        class="px-4 py-2 bg-red-600 rounded-lg text-white">
+        Delete Agent
       </button>
+    
+      <!-- RIGHT ACTIONS -->
+      <div class="flex gap-4">
+        <button @click="showEdit=false"
+          class="px-4 py-2 bg-zinc-700 rounded-lg">
+          Cancel
+        </button>
+    
+        <button @click="saveEdit"
+          :disabled="isSubmitting || !editPrompt.trim()"
+          class="px-4 py-2 bg-blue-600 rounded-lg">
+          {{ isSubmitting ? "Saving..." : "Save Changes" }}
+        </button>
+      </div>
 
-      <button @click="saveEdit"
-        :disabled="isSubmitting || !editPrompt.trim()"
-        class="px-4 py-2 bg-blue-600 rounded-lg">
-        {{ isSubmitting ? "Saving..." : "Save Changes" }}
-      </button>
     </div>
 
   </div>
