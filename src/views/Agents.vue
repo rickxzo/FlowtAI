@@ -136,6 +136,12 @@ const createAgent = async () => {
   isSubmitting.value = true
   error.value = null
 
+  if (newModel.value === newBackupModel.value) {
+    error.value = "Primary model and backup model cannot be the same."
+    isSubmitting.value = false
+    return
+  }
+
   try {
     const res = await fetch(
       "https://flowtai-1.onrender.com/create-agent?" +
@@ -167,6 +173,12 @@ const createAgent = async () => {
 const saveEdit = async () => {
   error.value = null
   isSubmitting.value = true
+
+  if (newModel.value === newBackupModel.value) {
+    error.value = "Primary model and backup model cannot be the same."
+    isSubmitting.value = false
+    return
+  }
 
   try {
     const res = await fetch(
