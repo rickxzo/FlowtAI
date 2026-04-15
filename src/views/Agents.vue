@@ -157,6 +157,7 @@ const createAgent = async () => {
 
     if (res.status === 200) {
       showCreate.value = false
+      loadAgents()
       router.push("/agents")
     } else {
       error.value = await res.text()
