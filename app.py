@@ -715,14 +715,14 @@ def agents():
         agents=r.get(f"{session["username"]}_agents")
         if agents is not None:
             agents = json.loads(agents)
-            return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8]} for a in agents]}, 200
+            return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8], 'backup_model': a[9], 'memory': 'permanent' if a[10] else 'temporary'} for a in agents]}, 200
         conn = connect_db()
         if conn == 404:
             return "Database connection error", 500
         cursor = conn.cursor()
         cursor.execute(
             '''
-            SELECT A.id, A.name, M.name, A.prompt, M.id, A.active, A.spend, A.iptokens, A.optokens
+            SELECT A.id, A.name, M.name, A.prompt, M.id, A.active, A.spend, A.iptokens, A.optokens, A.backup_model, A.memory
             FROM Agents A
             LEFT JOIN Models M ON A.model = M.id
             WHERE A.userid = %s
@@ -733,7 +733,7 @@ def agents():
         cursor.close()
         conn.close()
         r.set(f"{session["username"]}_agents", json.dumps(agents), ex=300)
-        return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8]} for a in agents]}, 200
+        return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8], 'backup_model': a[9], 'memory': 'permanent' if a[10] else 'temporary'} for a in agents]}, 200
     except Exception as e:
         logger.error(f"Error fetching agents: {e}")
         return f"Error fetching agents: {e}", 500
@@ -796,7 +796,7 @@ def edit_agent():
         if conn == 404:
             return "Database connection error", 500
         cursor = conn.cursor()
-        cursor.execute("SELECT id FROM Agents WHERE id = %s AND userid = %s", (agent_id, session['userid']))
+        cursor.execute("SELECT id FROM Agents WHERE id = %s", (agent_id,))
         result = cursor.fetchone()
         if not result:
             cursor.close()
