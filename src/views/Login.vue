@@ -22,7 +22,7 @@ const login = async () => {
     password: password.value
     })
 
-    const res = await fetch(`https://flowtai-1.onrender.com/login?${params.toString()}`, {
+    const res = await fetch(`https://flowtai.herewego.website/login?${params.toString()}`, {
       credentials: 'include'
     })
 
