@@ -331,6 +331,7 @@ def keepalive():
     URLS = [
     "https://flowtai.onrender.com",
     "https://flowtai-1.onrender.com",
+    "https://flowtai.herewego.website"
     ]
     for url in URLS:
         try:
@@ -357,6 +358,11 @@ from flask import request
 @app.route("/chat-widget")
 def chat_widget():
     return render_template("bot.html")
+
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    return 'Healthy', 200
 
 @app.route('/respond', methods=['POST', 'GET'])     
 def respond():
@@ -1065,4 +1071,4 @@ def delete_model():
         return f"Error deleting model: {e}", 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=int(os.getenv("PORT", 3005)))
