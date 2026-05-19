@@ -59,7 +59,7 @@ const openDelete = (id) => {
 const confirmDelete = async () => {
   isSubmitting.value = true
 
-  await fetch("https://flowtai-1.onrender.com/delete-agent?id=" + deleteAgentId.value , {credentials: "include"})
+  await fetch("https://flowtai.herewego.website/delete-agent?id=" + deleteAgentId.value , {credentials: "include"})
 
   showDelete.value = false
   await loadAgents()
@@ -89,7 +89,7 @@ const uploadKB = async () => {
     const formData = new FormData()
     formData.append("file", uploadFile.value)
 
-    const res = await fetch("https://flowtai-1.onrender.com/agent-kb?agent_id=" + uploadAgentId.value, {
+    const res = await fetch("https://flowtai.herewego.website/agent-kb?agent_id=" + uploadAgentId.value, {
       method: "POST",
       body: formData,
       credentials: "include"
@@ -213,7 +213,7 @@ const loadAgents = async () => {
   isUnauthorized.value = false
 
   try {
-    const res = await fetch("https://flowtai-1.onrender.com/agents", {
+    const res = await fetch("https://flowtai.herewego.website/agents", {
       credentials: "include"
     })
 
@@ -235,7 +235,7 @@ const loadAgents = async () => {
 }
 
 const loadModels = async () => {
-  const res = await fetch("https://flowtai-1.onrender.com/show-models", {
+  const res = await fetch("https://flowtai.herewego.website/show-models", {
     credentials: "include"
   })
   const data = await res.json()
