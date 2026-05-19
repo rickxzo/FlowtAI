@@ -11,7 +11,7 @@ const balance = ref(null)
 
 const fetchBalance = async () => {
   try {
-    const res = await fetch("https://flowtai-1.onrender.com/balance", {
+    const res = await fetch("https://flowtai.herewego.website/balance", {
       credentials: "include"
     })
     const data = await res.json()
@@ -25,7 +25,7 @@ const fetchBalance = async () => {
 
 const checkAuth = async () => {
   try {
-    const res = await fetch("https://flowtai-1.onrender.com/logged-in", {
+    const res = await fetch("https://flowtai.herewego.website/logged-in", {
       credentials: "include"
     })
     const data = await res.json()
