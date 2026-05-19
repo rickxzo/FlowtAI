@@ -9,7 +9,7 @@ const isLoadingModels = ref(true)
 
 const loadModels = async () => {
   try {
-    const res = await fetch('https://flowtai-1.onrender.com/show-models')
+    const res = await fetch('https://flowtai.herewego.website/show-models')
     const data = await res.json()
     models.value = data.models
     isLoadingModels.value = false
