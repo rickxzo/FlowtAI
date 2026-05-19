@@ -712,7 +712,7 @@ def agents():
     try:
         if 'userid' not in session:
             return "Unauthorized", 401
-        agents=r.get(f"{session["username"]}_agents")
+        agents=r.get(f"{session['username']}_agents")
         if agents is not None:
             agents = json.loads(agents)
             return {"agents": [{"id": a[0], "name": a[1], "model": a[2], "prompt": a[3], "model_id": a[4], "active": a[5], 'spend': a[6], 'ipt': a[7], 'opt': a[8], 'backup_model_id': a[9], 'backup_model': a[10], 'memory': 'persistent' if a[11] else 'temporary'} for a in agents]}, 200
