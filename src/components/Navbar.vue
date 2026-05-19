@@ -8,7 +8,7 @@ const isOpen = ref(false)
 
 const checkUser = async () => {
   try {
-    const res = await fetch('https://flowtai-1.onrender.com/logged-in', { credentials: 'include' })
+    const res = await fetch('https://flowtai.herewego.website/logged-in', { credentials: 'include' })
     const data = await res.json()
     isLoggedIn.value = data.logged_in
   } catch (err) {
@@ -18,7 +18,7 @@ const checkUser = async () => {
 
 const handleAuth = async () => {
   if (isLoggedIn.value) {
-    await fetch('https://flowtai-1.onrender.com/logout', { method: 'POST', credentials: 'include' })
+    await fetch('https://flowtai.herewego.website/logout', { method: 'POST', credentials: 'include' })
     isLoggedIn.value = false
     router.push('/')
   } else {
