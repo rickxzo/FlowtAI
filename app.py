@@ -255,7 +255,7 @@ def go_vector(state: ProcessState):
     response = json.loads(state["response"])
     info = vector_search(response["content"], state["index"], state['namespace'])
     knowledge = state["knowledge"]
-    knowledge += f"-> VECTOR SEARCH :{response["content"]}' \nKNOWLEDGE :{info}"
+    knowledge += f"-> VECTOR SEARCH :{response['content']} \nKNOWLEDGE :{info}"
     return {
         "response": response,
         "reply": reply,
@@ -349,7 +349,7 @@ print("IMPORTS DONE")
 @app.after_request
 def add_headers(response):
     response.headers['Access-Control-Allow-Credentials'] = 'true'
-    response.headers['Access-Control-Allow-Origin'] = 'https://flowtai.onrender.com'
+    response.headers['Access-Control-Allow-Origin'] = 'https://flowtai-slzo.onrender.com'
     return response
 
 from flask import request
